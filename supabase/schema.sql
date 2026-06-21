@@ -34,10 +34,35 @@ create table if not exists messages (
   created_at timestamptz not null default now()
 );
 
+create table if not exists artifacts (
+  id uuid primary key default gen_random_uuid(),
+  workspace_id uuid not null references workspaces(id) on delete cascade,
+  conversation_id uuid not null references conversations(id) on delete cascade,
+  type text not null check (type in ('task', 'decision', 'blocker')),
+  status text not null default 'pending' check (status in ('pending', 'accepted', 'rejected')),
+  title text not null,
+  summary text,
+  created_by uuid references auth.users(id) on delete set null,
+  created_by_email text,
+  created_at timestamptz not null default now(),
+  reviewed_by uuid references auth.users(id) on delete set null,
+  reviewed_at timestamptz
+);
+
+create table if not exists artifact_sources (
+  artifact_id uuid not null references artifacts(id) on delete cascade,
+  message_id uuid not null references messages(id) on delete cascade,
+  quote text not null,
+  created_at timestamptz not null default now(),
+  primary key (artifact_id, message_id)
+);
+
 alter table workspaces enable row level security;
 alter table workspace_members enable row level security;
 alter table conversations enable row level security;
 alter table messages enable row level security;
+alter table artifacts enable row level security;
+alter table artifact_sources enable row level security;
 
 drop policy if exists "workspace_select_member" on workspaces;
 create policy "workspace_select_member"
@@ -131,6 +156,75 @@ with check (
   )
 );
 
+drop policy if exists "artifact_select_member" on artifacts;
+create policy "artifact_select_member"
+on artifacts for select
+using (
+  exists (
+    select 1 from workspace_members
+    where workspace_members.workspace_id = artifacts.workspace_id
+    and workspace_members.user_id = auth.uid()
+  )
+);
+
+drop policy if exists "artifact_insert_member" on artifacts;
+create policy "artifact_insert_member"
+on artifacts for insert
+with check (
+  created_by = auth.uid()
+  and exists (
+    select 1 from workspace_members
+    where workspace_members.workspace_id = artifacts.workspace_id
+    and workspace_members.user_id = auth.uid()
+  )
+);
+
+drop policy if exists "artifact_update_member" on artifacts;
+create policy "artifact_update_member"
+on artifacts for update
+using (
+  exists (
+    select 1 from workspace_members
+    where workspace_members.workspace_id = artifacts.workspace_id
+    and workspace_members.user_id = auth.uid()
+  )
+)
+with check (
+  exists (
+    select 1 from workspace_members
+    where workspace_members.workspace_id = artifacts.workspace_id
+    and workspace_members.user_id = auth.uid()
+  )
+);
+
+drop policy if exists "artifact_source_select_member" on artifact_sources;
+create policy "artifact_source_select_member"
+on artifact_sources for select
+using (
+  exists (
+    select 1
+    from artifacts
+    join workspace_members on workspace_members.workspace_id = artifacts.workspace_id
+    where artifacts.id = artifact_sources.artifact_id
+    and workspace_members.user_id = auth.uid()
+  )
+);
+
+drop policy if exists "artifact_source_insert_member" on artifact_sources;
+create policy "artifact_source_insert_member"
+on artifact_sources for insert
+with check (
+  exists (
+    select 1
+    from artifacts
+    join workspace_members on workspace_members.workspace_id = artifacts.workspace_id
+    where artifacts.id = artifact_sources.artifact_id
+    and workspace_members.user_id = auth.uid()
+  )
+);
+
 create index if not exists workspace_members_user_idx on workspace_members(user_id);
 create index if not exists conversations_workspace_idx on conversations(workspace_id, created_at desc);
 create index if not exists messages_conversation_idx on messages(conversation_id, occurred_at asc);
+create index if not exists artifacts_conversation_idx on artifacts(conversation_id, status, created_at desc);
+create index if not exists artifact_sources_message_idx on artifact_sources(message_id);

@@ -13,7 +13,7 @@ export default async function ConversationPage({
 
   if (!userData.user) redirect("/login");
 
-  const [{ data: workspace }, { data: conversations = [] }, { data: activeConversation }, { data: messages = [] }] = await Promise.all([
+  const [{ data: workspace }, { data: conversations = [] }, { data: activeConversation }, { data: messages = [] }, { data: artifacts = [] }] = await Promise.all([
     supabase.from("workspaces").select("id, name").eq("id", workspaceId).single(),
     supabase.from("conversations").select("id, title").eq("workspace_id", workspaceId).order("created_at", { ascending: true }),
     supabase.from("conversations").select("id, title").eq("workspace_id", workspaceId).eq("id", conversationId).single(),
@@ -23,6 +23,12 @@ export default async function ConversationPage({
       .eq("workspace_id", workspaceId)
       .eq("conversation_id", conversationId)
       .order("occurred_at", { ascending: true }),
+    supabase
+      .from("artifacts")
+      .select("id, type, status, title, summary, created_by_email, created_at, artifact_sources(message_id, quote)")
+      .eq("workspace_id", workspaceId)
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: false }),
   ]);
 
   if (!workspace) redirect("/workspaces/new");
@@ -34,6 +40,7 @@ export default async function ConversationPage({
       conversations={conversations ?? []}
       activeConversation={activeConversation}
       messages={messages ?? []}
+      artifacts={artifacts ?? []}
       userId={userData.user.id}
       userEmail={userData.user.email}
     />

@@ -1,5 +1,5 @@
-import { Link2, Send, Sparkles } from "lucide-react";
-import { sendMessage } from "@/app/actions";
+import { Check, FileCheck2, Link2, Send, Sparkles, X } from "lucide-react";
+import { createArtifact, reviewArtifact, sendMessage, updateArtifact } from "@/app/actions";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -22,11 +22,103 @@ type Message = {
   occurred_at: string;
 };
 
+type ArtifactSource = {
+  message_id: string;
+  quote: string;
+};
+
+type Artifact = {
+  id: string;
+  type: "task" | "decision" | "blocker";
+  status: "pending" | "accepted" | "rejected";
+  title: string;
+  summary: string | null;
+  created_by_email: string | null;
+  created_at: string;
+  artifact_sources?: ArtifactSource[];
+};
+
 function formatMessageTime(value: string) {
   return new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(value));
 }
 
-function MessageRow({ message, currentUserId }: { message: Message; currentUserId?: string }) {
+function formatDateTime(value: string) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(value));
+}
+
+function ArtifactBadge({ type }: { type: Artifact["type"] }) {
+  return (
+    <span className="rounded border border-white/[0.08] px-2 py-1 text-[11px] font-medium uppercase tracking-[0.05em] text-slate">
+      {type}
+    </span>
+  );
+}
+
+function CreateArtifactForm({
+  workspaceId,
+  conversationId,
+  message,
+}: {
+  workspaceId?: string;
+  conversationId?: string;
+  message: Message;
+}) {
+  if (!workspaceId || !conversationId) return null;
+
+  return (
+    <details className="mt-2 max-w-xl rounded-md border border-white/[0.06] bg-surface-0 px-3 py-2">
+      <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-white">Create Artifact</summary>
+      <form action={createArtifact} className="mt-3 space-y-2">
+        <input type="hidden" name="workspaceId" value={workspaceId} />
+        <input type="hidden" name="conversationId" value={conversationId} />
+        <input type="hidden" name="messageId" value={message.id} />
+        <input type="hidden" name="sourceQuote" value={message.body} />
+        <div className="grid grid-cols-3 gap-2">
+          <select name="type" className="h-9 rounded-md border border-white/[0.08] bg-surface-1 px-2 text-xs text-white focus:outline-none">
+            <option value="task">Task</option>
+            <option value="decision">Decision</option>
+            <option value="blocker">Blocker</option>
+          </select>
+          <input
+            name="title"
+            required
+            className="col-span-2 h-9 rounded-md border border-white/[0.08] bg-surface-1 px-3 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
+            placeholder="Artifact title"
+          />
+        </div>
+        <textarea
+          name="summary"
+          className="min-h-16 w-full resize-none rounded-md border border-white/[0.08] bg-surface-1 px-3 py-2 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
+          placeholder="Optional note"
+        />
+        <div className="rounded-md border border-white/[0.06] bg-surface-1 p-2 text-xs leading-5 text-muted-foreground">
+          Source quote: &quot;{message.body}&quot;
+        </div>
+        <Button size="sm" variant="secondary">
+          <FileCheck2 className="h-3.5 w-3.5" />
+          Create pending artifact
+        </Button>
+      </form>
+    </details>
+  );
+}
+
+function MessageRow({
+  message,
+  currentUserId,
+  workspaceId,
+  conversationId,
+}: {
+  message: Message;
+  currentUserId?: string;
+  workspaceId?: string;
+  conversationId?: string;
+}) {
   const own = Boolean(currentUserId && message.created_by === currentUserId);
 
   return (
@@ -43,28 +135,101 @@ function MessageRow({ message, currentUserId }: { message: Message; currentUserI
       >
         {message.body}
       </div>
+      <CreateArtifactForm workspaceId={workspaceId} conversationId={conversationId} message={message} />
     </article>
   );
 }
 
-function ContextSection({ title, items, tone = "default" }: { title: string; items: string[]; tone?: "default" | "danger" }) {
+function ReviewArtifactCard({ artifact, workspaceId, conversationId }: { artifact: Artifact; workspaceId: string; conversationId: string }) {
+  const source = artifact.artifact_sources?.[0];
+
+  return (
+    <article className="rounded-lg border border-white/[0.06] bg-surface-0 p-3">
+      <form action={updateArtifact} className="space-y-2">
+        <input type="hidden" name="workspaceId" value={workspaceId} />
+        <input type="hidden" name="conversationId" value={conversationId} />
+        <input type="hidden" name="artifactId" value={artifact.id} />
+        <div className="flex items-center justify-between gap-2">
+          <select name="type" defaultValue={artifact.type} className="h-8 rounded-md border border-white/[0.08] bg-surface-1 px-2 text-xs text-white focus:outline-none">
+            <option value="task">Task</option>
+            <option value="decision">Decision</option>
+            <option value="blocker">Blocker</option>
+          </select>
+          <span className="text-[11px] text-muted-foreground">{formatDateTime(artifact.created_at)}</span>
+        </div>
+        <input
+          name="title"
+          defaultValue={artifact.title}
+          className="h-9 w-full rounded-md border border-white/[0.08] bg-surface-1 px-3 text-sm text-white focus:outline-none"
+        />
+        <textarea
+          name="summary"
+          defaultValue={artifact.summary ?? ""}
+          className="min-h-14 w-full resize-none rounded-md border border-white/[0.08] bg-surface-1 px-3 py-2 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
+          placeholder="Optional note"
+        />
+        <div className="text-[11px] leading-5 text-muted-foreground">Created by {artifact.created_by_email ?? "unknown"}</div>
+        {source ? <div className="rounded-md border border-white/[0.06] bg-surface-1 p-2 text-xs leading-5 text-muted-foreground">Proof: &quot;{source.quote}&quot;</div> : null}
+        <div className="flex flex-wrap gap-2 pt-1">
+          <Button size="sm" variant="secondary">
+            Save edit
+          </Button>
+        </div>
+      </form>
+      <div className="mt-2 flex flex-wrap gap-2">
+        <form action={reviewArtifact}>
+          <input type="hidden" name="workspaceId" value={workspaceId} />
+          <input type="hidden" name="conversationId" value={conversationId} />
+          <input type="hidden" name="artifactId" value={artifact.id} />
+          <input type="hidden" name="status" value="accepted" />
+          <Button size="sm">
+            <Check className="h-3.5 w-3.5" />
+            Accept
+          </Button>
+        </form>
+        <form action={reviewArtifact}>
+          <input type="hidden" name="workspaceId" value={workspaceId} />
+          <input type="hidden" name="conversationId" value={conversationId} />
+          <input type="hidden" name="artifactId" value={artifact.id} />
+          <input type="hidden" name="status" value="rejected" />
+          <Button size="sm" variant="ghost">
+            <X className="h-3.5 w-3.5" />
+            Reject
+          </Button>
+        </form>
+      </div>
+    </article>
+  );
+}
+
+function AcceptedArtifactCard({ artifact }: { artifact: Artifact }) {
+  const source = artifact.artifact_sources?.[0];
+
+  return (
+    <article className="rounded-md border border-white/[0.06] bg-surface-0 px-3 py-2">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <ArtifactBadge type={artifact.type} />
+        <span className="text-[11px] text-muted-foreground">{formatDateTime(artifact.created_at)}</span>
+      </div>
+      <div className="text-sm font-medium text-white">{artifact.title}</div>
+      {artifact.summary ? <p className="mt-1 text-xs leading-5 text-muted-foreground">{artifact.summary}</p> : null}
+      <div className="mt-2 text-[11px] text-muted-foreground">Created by {artifact.created_by_email ?? "unknown"}</div>
+      {source ? <div className="mt-2 rounded border border-white/[0.06] bg-surface-1 p-2 text-xs leading-5 text-muted-foreground">Proof: &quot;{source.quote}&quot;</div> : null}
+    </article>
+  );
+}
+
+function ArtifactSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
       <h3 className="mb-2 text-xs font-medium uppercase tracking-[0.05em] text-muted-foreground">{title}</h3>
-      {items.length === 0 ? (
-        <div className="rounded-md border border-white/[0.06] bg-surface-0 px-3 py-2 text-sm text-muted-foreground">None yet.</div>
-      ) : (
-        <div className="space-y-2">
-          {items.map((item) => (
-            <div key={item} className="rounded-md border border-white/[0.06] bg-surface-0 px-3 py-2 text-sm text-white">
-              <span className={cn("mr-2 inline-block h-1.5 w-1.5 rounded-full", tone === "danger" ? "bg-destructive" : "bg-slate")} />
-              {item}
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="space-y-2">{children}</div>
     </section>
   );
+}
+
+function EmptyState({ children }: { children: React.ReactNode }) {
+  return <div className="rounded-md border border-white/[0.06] bg-surface-0 px-3 py-2 text-sm text-muted-foreground">{children}</div>;
 }
 
 export function ConversationWorkspace({
@@ -72,6 +237,7 @@ export function ConversationWorkspace({
   conversations = [],
   activeConversation = null,
   messages = [],
+  artifacts = [],
   userId,
   userEmail,
 }: {
@@ -79,9 +245,13 @@ export function ConversationWorkspace({
   conversations?: Conversation[];
   activeConversation?: Conversation | null;
   messages?: Message[];
+  artifacts?: Artifact[];
   userId?: string;
   userEmail?: string | null;
 }) {
+  const pendingArtifacts = artifacts.filter((artifact) => artifact.status === "pending");
+  const acceptedArtifacts = artifacts.filter((artifact) => artifact.status === "accepted");
+
   return (
     <AppShell
       workspace={workspace}
@@ -89,13 +259,13 @@ export function ConversationWorkspace({
       activeConversationId={activeConversation?.id}
       userEmail={userEmail}
     >
-      <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_22rem]">
         <section className="flex min-w-0 flex-col border-r border-white/[0.06]">
           <header className="flex h-16 shrink-0 items-center justify-between border-b border-white/[0.06] px-4">
             <div className="min-w-0">
               <h1 className="truncate text-base font-semibold text-white">{activeConversation?.title ?? "No conversation selected"}</h1>
               <p className="mt-1 text-xs text-muted-foreground">
-                {activeConversation ? `${messages.length} persisted messages` : "Create or select a conversation"}
+                {activeConversation ? `${messages.length} messages / ${pendingArtifacts.length} pending / ${acceptedArtifacts.length} accepted` : "Create or select a conversation"}
               </p>
             </div>
             <Button variant="secondary" size="sm" disabled>
@@ -117,7 +287,13 @@ export function ConversationWorkspace({
                 </div>
               ) : null}
               {messages.map((message) => (
-                <MessageRow key={message.id} message={message} currentUserId={userId} />
+                <MessageRow
+                  key={message.id}
+                  message={message}
+                  currentUserId={userId}
+                  workspaceId={workspace?.id}
+                  conversationId={activeConversation?.id}
+                />
               ))}
             </div>
           </div>
@@ -144,21 +320,35 @@ export function ConversationWorkspace({
           <header className="flex h-16 shrink-0 items-center justify-between border-b border-white/[0.06] px-4">
             <div>
               <h2 className="text-sm font-semibold text-white">Conversation Context</h2>
-              <p className="mt-1 text-xs text-muted-foreground">Compiled from this chat</p>
+              <p className="mt-1 text-xs text-muted-foreground">Artifacts and proof from this chat</p>
             </div>
             <Link2 className="h-4 w-4 text-muted-foreground" />
           </header>
           <div className="min-h-0 flex-1 space-y-6 overflow-y-auto p-4">
-            <ContextSection title="Needs Review" items={[]} />
-            <ContextSection title="Accepted Tasks" items={[]} />
-            <ContextSection title="Decisions" items={[]} />
-            <ContextSection title="Blockers" items={[]} tone="danger" />
-            <section className="rounded-lg border border-white/[0.06] bg-surface-0 p-3">
-              <h3 className="mb-2 text-xs font-medium uppercase tracking-[0.05em] text-muted-foreground">Proof Trail</h3>
-              <p className="text-sm leading-6 text-muted-foreground">
-                Proof starts in the extraction/review phases. Phase 1 now persists workspaces, conversations, and messages.
-              </p>
-            </section>
+            <ArtifactSection title="Review">
+              {pendingArtifacts.length === 0 ? <EmptyState>No pending artifacts.</EmptyState> : null}
+              {workspace && activeConversation
+                ? pendingArtifacts.map((artifact) => (
+                    <ReviewArtifactCard key={artifact.id} artifact={artifact} workspaceId={workspace.id} conversationId={activeConversation.id} />
+                  ))
+                : null}
+            </ArtifactSection>
+
+            <ArtifactSection title="Accepted Artifacts">
+              {acceptedArtifacts.length === 0 ? <EmptyState>No accepted artifacts yet.</EmptyState> : null}
+              {acceptedArtifacts.map((artifact) => (
+                <AcceptedArtifactCard key={artifact.id} artifact={artifact} />
+              ))}
+            </ArtifactSection>
+
+            <ArtifactSection title="Rejected">
+              {artifacts.filter((artifact) => artifact.status === "rejected").length === 0 ? <EmptyState>No rejected artifacts.</EmptyState> : null}
+              {artifacts
+                .filter((artifact) => artifact.status === "rejected")
+                .map((artifact) => (
+                  <AcceptedArtifactCard key={artifact.id} artifact={artifact} />
+                ))}
+            </ArtifactSection>
           </div>
         </aside>
       </div>

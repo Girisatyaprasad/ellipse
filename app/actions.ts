@@ -110,3 +110,100 @@ export async function sendMessage(formData: FormData) {
 
   revalidatePath(`/workspaces/${workspaceId}/conversations/${conversationId}`);
 }
+
+export async function createArtifact(formData: FormData) {
+  const workspaceId = formString(formData, "workspaceId");
+  const conversationId = formString(formData, "conversationId");
+  const messageId = formString(formData, "messageId");
+  const type = formString(formData, "type");
+  const title = formString(formData, "title");
+  const summary = formString(formData, "summary");
+  const sourceQuote = formString(formData, "sourceQuote");
+  const supabase = await createClient();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !userData.user) redirect("/login");
+  if (!workspaceId || !conversationId || !messageId || !title) return;
+  if (!["task", "decision", "blocker"].includes(type)) return;
+
+  const { data: artifact, error: artifactError } = await supabase
+    .from("artifacts")
+    .insert({
+      workspace_id: workspaceId,
+      conversation_id: conversationId,
+      type,
+      status: "pending",
+      title,
+      summary: summary || null,
+      created_by: userData.user.id,
+      created_by_email: userData.user.email,
+    })
+    .select("id")
+    .single();
+
+  if (artifactError || !artifact) {
+    redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, artifactError?.message ?? "Could not create artifact.");
+  }
+
+  const { error: sourceError } = await supabase.from("artifact_sources").insert({
+    artifact_id: artifact.id,
+    message_id: messageId,
+    quote: sourceQuote || title,
+  });
+
+  if (sourceError) {
+    redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, sourceError.message);
+  }
+
+  revalidatePath(`/workspaces/${workspaceId}/conversations/${conversationId}`);
+}
+
+export async function updateArtifact(formData: FormData) {
+  const workspaceId = formString(formData, "workspaceId");
+  const conversationId = formString(formData, "conversationId");
+  const artifactId = formString(formData, "artifactId");
+  const title = formString(formData, "title");
+  const summary = formString(formData, "summary");
+  const type = formString(formData, "type");
+  const supabase = await createClient();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !userData.user) redirect("/login");
+  if (!artifactId || !title || !["task", "decision", "blocker"].includes(type)) return;
+
+  const { error } = await supabase
+    .from("artifacts")
+    .update({ title, summary: summary || null, type })
+    .eq("id", artifactId)
+    .eq("workspace_id", workspaceId);
+
+  if (error) redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, error.message);
+
+  revalidatePath(`/workspaces/${workspaceId}/conversations/${conversationId}`);
+}
+
+export async function reviewArtifact(formData: FormData) {
+  const workspaceId = formString(formData, "workspaceId");
+  const conversationId = formString(formData, "conversationId");
+  const artifactId = formString(formData, "artifactId");
+  const status = formString(formData, "status");
+  const supabase = await createClient();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !userData.user) redirect("/login");
+  if (!artifactId || !["accepted", "rejected", "pending"].includes(status)) return;
+
+  const { error } = await supabase
+    .from("artifacts")
+    .update({
+      status,
+      reviewed_by: status === "pending" ? null : userData.user.id,
+      reviewed_at: status === "pending" ? null : new Date().toISOString(),
+    })
+    .eq("id", artifactId)
+    .eq("workspace_id", workspaceId);
+
+  if (error) redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, error.message);
+
+  revalidatePath(`/workspaces/${workspaceId}/conversations/${conversationId}`);
+}
