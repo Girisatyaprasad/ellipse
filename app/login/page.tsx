@@ -1,13 +1,22 @@
 import { signIn, signUp } from "@/app/actions";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; message?: string }>;
 }) {
   const params = await searchParams;
+
+  if (hasSupabaseEnv()) {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+
+    if (data.user) redirect("/app");
+  }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
@@ -25,6 +34,9 @@ export default async function LoginPage({
         ) : null}
         {params.error ? (
           <div className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">{params.error}</div>
+        ) : null}
+        {params.message ? (
+          <div className="mt-4 rounded-md border border-white/[0.12] bg-white/[0.04] p-3 text-sm leading-6 text-white">{params.message}</div>
         ) : null}
 
         <form className="mt-6 space-y-3">

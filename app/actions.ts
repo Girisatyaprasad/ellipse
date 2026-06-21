@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -13,6 +14,19 @@ function redirectWithError(path: string, error: string): never {
   redirect(`${path}?error=${encodeURIComponent(error)}`);
 }
 
+function redirectWithMessage(path: string, message: string): never {
+  redirect(`${path}?message=${encodeURIComponent(message)}`);
+}
+
+async function getOrigin() {
+  const headerStore = await headers();
+  const origin = headerStore.get("origin");
+  const host = headerStore.get("host");
+  const protocol = headerStore.get("x-forwarded-proto") ?? "http";
+
+  return origin ?? (host ? `${protocol}://${host}` : "");
+}
+
 export async function signIn(formData: FormData) {
   const email = formString(formData, "email");
   const password = formString(formData, "password");
@@ -21,24 +35,35 @@ export async function signIn(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) redirectWithError("/login", error.message);
 
-  redirect("/");
+  redirect("/app");
 }
 
 export async function signUp(formData: FormData) {
   const email = formString(formData, "email");
   const password = formString(formData, "password");
   const supabase = await createClient();
+  const origin = await getOrigin();
 
-  const { error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: origin ? `${origin}/auth/callback?next=/app` : undefined,
+    },
+  });
   if (error) redirectWithError("/login", error.message);
 
-  redirect("/");
+  if (!data.session) {
+    redirectWithMessage("/login", "Check your email to confirm your account, then sign in.");
+  }
+
+  redirect("/app");
 }
 
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  redirect("/login");
+  redirect("/");
 }
 
 export async function createWorkspace(formData: FormData) {
