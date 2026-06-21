@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ellipse - Decisions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#d8e3fb",
+                      "outline": "#8e9195",
+                      "on-surface": "#e5e2e1",
+                      "on-tertiary-fixed": "#111c2d",
+                      "on-secondary-fixed-variant": "#38485d",
+                      "surface-variant": "#353534",
+                      "surface-container-lowest": "#0e0e0e",
+                      "tertiary-fixed": "#d8e3fb",
+                      "surface-container-low": "#1c1b1b",
+                      "on-background": "#e5e2e1",
+                      "secondary-container": "#3a4a5f",
+                      "primary-fixed-dim": "#c1c7cf",
+                      "on-surface-variant": "#c5c6cb",
+                      "surface-container-high": "#2a2a2a",
+                      "tertiary-fixed-dim": "#bcc7de",
+                      "secondary-fixed-dim": "#b7c8e1",
+                      "secondary-fixed": "#d3e4fe",
+                      "primary-fixed": "#dde3eb",
+                      "surface-container": "#201f1f",
+                      "secondary": "#b7c8e1",
+                      "on-primary-fixed": "#161c22",
+                      "on-tertiary-container": "#5a6579",
+                      "on-primary-container": "#5f656c",
+                      "tertiary": "#ffffff",
+                      "inverse-on-surface": "#313030",
+                      "surface-container-highest": "#353534",
+                      "on-tertiary": "#263143",
+                      "primary": "#ffffff",
+                      "surface-tint": "#c1c7cf",
+                      "inverse-surface": "#e5e2e1",
+                      "outline-variant": "#44474a",
+                      "error": "#ffb4ab",
+                      "surface-dim": "#131313",
+                      "on-secondary": "#213145",
+                      "on-error-container": "#ffdad6",
+                      "surface-bright": "#3a3939",
+                      "on-primary-fixed-variant": "#41474e",
+                      "surface": "#131313",
+                      "on-primary": "#2b3137",
+                      "on-secondary-fixed": "#0b1c30",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#3c475a",
+                      "background": "#131313",
+                      "on-error": "#690005",
+                      "inverse-primary": "#595f66",
+                      "primary-container": "#dde3eb",
+                      "on-secondary-container": "#a9bad3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "xxl": "80px",
+                      "margin": "48px",
+                      "lg": "24px",
+                      "xl": "40px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "code-sm": [
+                              "Geist"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.03em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #0A0A0A; /* Level 0 Canvas */
+            color: #e5e2e1;
+        }
+        
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.4); /* #1A1A1A base with opacity */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .level-1-card {
+            background-color: #121212;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .inner-glow {
+            box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .lead-line {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Custom input bottom border only */
+        .input-minimal {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0;
+            padding: 8px 0;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .input-minimal:focus {
+            outline: none;
+            border-color: #b7c8e1; /* secondary color */
+            box-shadow: 0 1px 0 0 rgba(183, 200, 225, 0.3);
+        }
+
+    </style>
+</head>
+<body class="font-body-lg text-body-lg text-on-surface antialiased overflow-x-hidden min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-256px)] z-50 bg-surface-dim/80 backdrop-blur-xl border-b border-white/5 flex justify-between items-center px-gutter h-16">
+<div class="flex items-center gap-6">
+<span class="font-display-lg text-display-lg font-bold text-primary text-xl">Ellipse</span>
+<nav class="flex gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-opacity font-headline-md text-headline-md text-sm flex items-center" href="#">
+<span class="material-symbols-outlined text-lg mr-2" style="font-variation-settings: 'FILL' 0;">search</span>
+                    Intelligence Search
+                </a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-opacity" title="Sensors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sensors</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-opacity" title="Auto Awesome">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-opacity" title="User Profile">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-surface-dim dark:bg-surface-dim border-r border-white/5 flex flex-col p-lg z-50">
+<div class="mb-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-white/10">
+<span class="font-display-lg text-display-lg tracking-tighter text-primary text-xl font-bold">E</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary text-sm font-semibold">Ellipse</h2>
+<p class="font-label-md text-label-md text-on-surface-variant text-xs opacity-70">Organizational Intelligence</p>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">group</span>
+<span class="font-label-md text-label-md">People</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">chat_bubble</span>
+<span class="font-label-md text-label-md">Conversations</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">task_alt</span>
+<span class="font-label-md text-label-md">Tasks</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">event</span>
+<span class="font-label-md text-label-md">Meetings</span>
+</a>
+<!-- Active Tab: Decisions -->
+<a class="flex items-center gap-3 px-3 py-2 text-primary font-bold bg-surface-container-high/50 rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="font-label-md text-label-md">Decisions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">timeline</span>
+<span class="font-label-md text-label-md">Timelines</span>
+</a>
+</div>
+<div class="mt-auto pt-4 border-t border-white/5">
+<button class="w-full flex items-center justify-between px-3 py-2 bg-surface-container-high/20 hover:bg-surface-container-high/40 border border-white/5 rounded-lg transition-colors group inner-glow">
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">Search &amp; Command</span>
+<span class="font-code-sm text-code-sm text-outline px-1.5 py-0.5 rounded bg-surface-dim border border-white/10 opacity-70">⌘K</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-margin pb-xxl min-h-screen">
+<!-- Page Header -->
+<div class="mb-xl flex flex-col gap-md">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Decision Log</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                Extracted cryptographic certainty from organizational dialogue. A chronological ledger of architectural, product, and strategic commitments.
+            </p>
+</div>
+<!-- Filter Bar -->
+<div class="glass-panel rounded-xl p-md mb-xl flex flex-wrap items-center gap-6 z-10 relative">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm">filter_list</span>
+<span class="font-label-md text-label-md text-outline">Filter by:</span>
+</div>
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-48">
+<span class="material-symbols-outlined absolute left-0 bottom-2 text-outline text-sm">folder</span>
+<input class="input-minimal w-full pl-6 font-body-sm text-body-sm text-primary placeholder:text-outline focus:ring-0" placeholder="Project..." type="text"/>
+</div>
+<div class="relative w-48">
+<span class="material-symbols-outlined absolute left-0 bottom-2 text-outline text-sm">person</span>
+<input class="input-minimal w-full pl-6 font-body-sm text-body-sm text-primary placeholder:text-outline focus:ring-0" placeholder="Owner..." type="text"/>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="font-label-md text-label-md px-3 py-1.5 rounded-lg border border-white/10 text-on-surface-variant hover:text-primary hover:border-white/20 transition-all bg-surface-container/30">
+                    Clear
+                </button>
+<button class="font-label-md text-label-md px-4 py-1.5 rounded-lg bg-surface-container-highest text-primary border border-white/10 hover:border-white/30 inner-glow transition-all shadow-lg">
+                    Apply Filters
+                </button>
+</div>
+</div>
+<!-- Layout: Nodes & Lead Lines (Asymmetric, Minimalist) -->
+<div class="relative pl-8 border-l lead-line space-y-12 pb-24">
+<!-- Decision Node 1 -->
+<div class="relative group">
+<!-- Connector Dot -->
+<div class="absolute -left-[37px] top-4 w-2 h-2 rounded-full bg-primary ring-4 ring-background z-10 transition-transform group-hover:scale-150 duration-300"></div>
+<div class="level-1-card rounded-xl p-6 transition-all duration-300 hover:bg-surface-container-low group-hover:-translate-y-1 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
+<div class="flex justify-between items-start mb-4">
+<div>
+<!-- Chips -->
+<div class="flex gap-2 mb-3">
+<span class="px-2 py-0.5 rounded-md bg-surface-container-highest font-label-md text-label-md text-on-surface-variant text-[10px] uppercase tracking-wider border border-white/5">Architecture</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-highest font-label-md text-label-md text-on-surface-variant text-[10px] uppercase tracking-wider border border-white/5">Project Alpha</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Migrate Core Database to CockroachDB</h3>
+</div>
+<div class="text-right">
+<span class="block font-code-sm text-code-sm text-outline mb-1">2023-10-24 14:32 UTC</span>
+<div class="flex items-center justify-end gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">task_alt</span>
+<span class="font-label-md text-label-md">12 Impacted Tasks</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-6 items-start">
+<div class="col-span-8">
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+                                Context: Current PostgreSQL setup is hitting scaling bottlenecks in EU-West regions. To support multi-region writes with strong consistency without sharding complexities, we are moving to a distributed SQL model. This was debated against PlanetScale, but self-hosting requirements pushed us towards Cockroach.
+                            </p>
+<div class="flex items-center gap-3 pt-4 border-t border-white/5">
+<a class="flex items-center gap-1.5 font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[14px]">chat_bubble</span>
+                                    Source Conversation (Slack #eng-arch)
+                                </a>
+<span class="text-outline/30">•</span>
+<button class="flex items-center gap-1.5 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+                                    View Dependency Graph
+                                    <span class="material-symbols-outlined text-[14px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="col-span-4 border-l border-white/5 pl-6 flex flex-col gap-4">
+<div>
+<span class="block font-label-md text-label-md text-outline mb-1 text-[10px] uppercase tracking-wider">Decided By</span>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-white/10 flex items-center justify-center">
+<span class="font-label-md text-label-md text-primary text-[10px]">SJ</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface">Sarah Jenkins (CTO)</span>
+</div>
+</div>
+<div>
+<span class="block font-label-md text-label-md text-outline mb-1 text-[10px] uppercase tracking-wider">Status</span>
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-md text-label-md">In Progress</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Decision Node 2 -->
+<div class="relative group ml-8"> <!-- Indented slightly to show hierarchy/asymmetry -->
+<!-- Connector Dot -->
+<div class="absolute -left-[69px] top-4 w-1.5 h-1.5 rounded-full bg-outline ring-4 ring-background z-10"></div>
+<!-- Sub-lead line -->
+<div class="absolute -left-[37px] top-4 w-[37px] h-[1px] bg-white/5"></div>
+<div class="level-1-card rounded-xl p-6 transition-all duration-300 hover:bg-surface-container-low group-hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex gap-2 mb-3">
+<span class="px-2 py-0.5 rounded-md bg-surface-container-highest font-label-md text-label-md text-on-surface-variant text-[10px] uppercase tracking-wider border border-white/5">Product</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-highest font-label-md text-label-md text-on-surface-variant text-[10px] uppercase tracking-wider border border-white/5">UI V2</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Deprecate 'Dark Mode Toggle', Enforce System Default</h3>
+</div>
+<div class="text-right">
+<span class="block font-code-sm text-code-sm text-outline mb-1">2023-10-22 09:15 UTC</span>
+<div class="flex items-center justify-end gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">task_alt</span>
+<span class="font-label-md text-label-md">3 Impacted Tasks</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-6 items-start">
+<div class="col-span-8">
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+                                Context: The manual toggle is causing state management complexity and visual bugs across micro-frontends. Moving to purely CSS media query `prefers-color-scheme` reduces codebase by ~400 lines and aligns with OS-level user intent.
+                            </p>
+<div class="flex items-center gap-3 pt-4 border-t border-white/5">
+<a class="flex items-center gap-1.5 font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[14px]">chat_bubble</span>
+                                    Source Conversation (Linear Issue #442)
+                                </a>
+</div>
+</div>
+<div class="col-span-4 border-l border-white/5 pl-6 flex flex-col gap-4">
+<div>
+<span class="block font-label-md text-label-md text-outline mb-1 text-[10px] uppercase tracking-wider">Decided By</span>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-white/10 flex items-center justify-center">
+<span class="font-label-md text-label-md text-primary text-[10px]">ML</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface">Marcus Lee (Design Lead)</span>
+</div>
+</div>
+<div>
+<span class="block font-label-md text-label-md text-outline mb-1 text-[10px] uppercase tracking-wider">Status</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-md text-label-md">Implemented</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Decision Node 3 -->
+<div class="relative group">
+<!-- Connector Dot -->
+<div class="absolute -left-[37px] top-4 w-2 h-2 rounded-full bg-primary ring-4 ring-background z-10 transition-transform group-hover:scale-150 duration-300"></div>
+<div class="level-1-card rounded-xl p-6 transition-all duration-300 hover:bg-surface-container-low group-hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex gap-2 mb-3">
+<span class="px-2 py-0.5 rounded-md bg-surface-container-highest font-label-md text-label-md text-on-surface-variant text-[10px] uppercase tracking-wider border border-white/5">Strategy</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-highest font-label-md text-label-md text-on-surface-variant text-[10px] uppercase tracking-wider border border-white/5">Q4 Planning</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Pause Expansion into APAC Region</h3>
+</div>
+<div class="text-right">
+<span class="block font-code-sm text-code-sm text-outline mb-1">2023-10-18 16:00 UTC</span>
+<div class="flex items-center justify-end gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">task_alt</span>
+<span class="font-label-md text-label-md">45 Impacted Tasks</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-6 items-start">
+<div class="col-span-8">
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+                                Context: Following the Q3 board meeting, resources are being reallocated to solidify the North American enterprise pipeline. APAC infrastructure build-out is delayed until Q2 2024 to conserve burn rate and focus engineering on core stability.
+                            </p>
+<div class="flex items-center gap-3 pt-4 border-t border-white/5">
+<a class="flex items-center gap-1.5 font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[14px]">chat_bubble</span>
+                                    Source Conversation (Board Deck Notes)
+                                </a>
+</div>
+</div>
+<div class="col-span-4 border-l border-white/5 pl-6 flex flex-col gap-4">
+<div>
+<span class="block font-label-md text-label-md text-outline mb-1 text-[10px] uppercase tracking-wider">Decided By</span>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-white/10 flex items-center justify-center">
+<span class="font-label-md text-label-md text-primary text-[10px]">ER</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface">Elena Rodriguez (CEO)</span>
+</div>
+</div>
+<div>
+<span class="block font-label-md text-label-md text-outline mb-1 text-[10px] uppercase tracking-wider">Status</span>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span class="font-label-md text-label-md">Locked (Strategic)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More (Ghost Button) -->
+<div class="flex justify-center mt-8">
+<button class="font-label-md text-label-md px-6 py-2 rounded-lg border border-white/10 text-on-surface-variant hover:text-primary hover:border-white/30 transition-all bg-transparent flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+                Load Historical Decisions
+            </button>
+</div>
+</main>
+</body></html>

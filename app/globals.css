@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --background: 0 0% 4%;
+  --foreground: 20 7% 89%;
+  --primary: 0 0% 100%;
+  --primary-foreground: 210 11% 9%;
+  --secondary: 214 23% 65%;
+  --secondary-foreground: 212 35% 14%;
+  --muted: 0 0% 8%;
+  --muted-foreground: 220 9% 62%;
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 6 100% 84%;
+  --destructive-foreground: 357 100% 21%;
+  --border: 0 0% 11%;
+  --input: 0 0% 14%;
+  --ring: 215 20% 65%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  background: #090909;
+}
+
+body {
+  min-height: 100vh;
+  background: #090909;
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(148, 163, 184, 0.22);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.13);
+  border-radius: 999px;
+}
+
+@layer components {
+  .glass-panel {
+    background: #121212;
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .label-caps {
+    font-family: var(--font-geist), Inter, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .lead-line {
+    background: rgba(255, 255, 255, 0.055);
+  }
+}

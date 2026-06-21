@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ellipse - Today</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#131313",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-secondary": "#2f3131",
+                    "on-tertiary-fixed": "#311400",
+                    "surface-variant": "#353534",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-primary-container": "#00285d",
+                    "inverse-primary": "#005ac2",
+                    "surface-container-low": "#1c1b1b",
+                    "surface-container-lowest": "#0e0e0e",
+                    "error-container": "#93000a",
+                    "surface-bright": "#3a3939",
+                    "inverse-on-surface": "#313030",
+                    "on-primary-fixed-variant": "#004395",
+                    "surface-container": "#201f1f",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "primary-fixed": "#d8e2ff",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-primary": "#002e6a",
+                    "outline-variant": "#424754",
+                    "primary-container": "#4d8eff",
+                    "on-surface-variant": "#c2c6d6",
+                    "tertiary-container": "#df7412",
+                    "on-tertiary": "#502400",
+                    "surface-dim": "#131313",
+                    "tertiary": "#ffb786",
+                    "outline": "#8c909f",
+                    "on-tertiary-container": "#461f00",
+                    "on-secondary-fixed-variant": "#454747",
+                    "primary": "#adc6ff",
+                    "background": "#131313",
+                    "on-secondary-container": "#b4b5b5",
+                    "on-surface": "#e5e2e1",
+                    "secondary-fixed": "#e2e2e2",
+                    "secondary": "#c6c6c7",
+                    "surface-container-high": "#2a2a2a",
+                    "secondary-container": "#454747",
+                    "on-background": "#e5e2e1",
+                    "on-primary-fixed": "#001a42",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "surface-tint": "#adc6ff",
+                    "surface-container-highest": "#353534",
+                    "inverse-surface": "#e5e2e1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xs": "4px",
+                    "xl": "40px",
+                    "unit": "4px",
+                    "lg": "24px",
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "code": ["JetBrains Mono"],
+                    "label-md": ["Inter"],
+                    "display": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "code": ["13px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #090909; /* Deep obsidian background */
+            color: #e5e2e1;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .titanium-border {
+            border: 1px solid #1C1C1C;
+        }
+        
+        .surface-level-1 {
+            background-color: #0D0D0D;
+        }
+        
+        .surface-level-2 {
+            background-color: #141414;
+        }
+
+        .hover-surface:hover {
+            background-color: #1a1a1a;
+            border-color: #2A2A2A;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex bg-surface dark:bg-surface text-primary dark:text-primary font-body-md text-body-md h-screen w-64 fixed left-0 top-0 border-r border-outline-variant flex flex-col h-full py-lg px-md z-50">
+<!-- Header -->
+<div class="mb-xl flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 overflow-hidden">
+<img alt="Organization Workspace Logo" class="w-full h-full object-cover" data-alt="Minimalist abstract geometric logo, professional corporate identity, flat design, stark contrast, professional lighting, centered, high quality, obsidian background with stark white elements" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvpsHU7xtSF8Z8-jNmsEKIaCB8wsjBd1QpB4dIrI0s1c1-cwloTsJjfGSgcF0w71felpVC6y0fwU8LxON0H-_UyIrNt6W5lxI7Hxiv1ujQEJOax-WYgtgQnt3MpEeQFV_Oe3oTvqWzpFXfUpoND8KvZVZPL1jvxulAtriPejpq49jZEZeSQPOWqN3QUblQsOMKj3JRWZz1Z1kI6hDl0npgMEe2PA8SgAbWWruQktcZP8dZy2jTrEVDDLGYBPjitK_t03g3PMJt4Nq1"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">Ellipse</h1>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Intelligence Hub</p>
+</div>
+</div>
+<!-- Main Tabs -->
+<ul class="flex-1 flex flex-col gap-xs">
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface font-bold border-r-2 border-primary bg-surface-container-high transition-colors cursor-pointer active:scale-95 group">
+<span class="material-symbols-outlined text-[20px]">today</span>
+<span>Today</span>
+</li>
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 group">
+<span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+<span>Conversations</span>
+</li>
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 group">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>Tasks</span>
+</li>
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 group">
+<span class="material-symbols-outlined text-[20px]">gavel</span>
+<span>Decisions</span>
+</li>
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 group">
+<span class="material-symbols-outlined text-[20px]">timeline</span>
+<span>Timeline</span>
+</li>
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 group">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span>People</span>
+</li>
+</ul>
+<!-- Footer Tabs -->
+<ul class="flex flex-col gap-xs mt-auto pt-lg border-t border-outline-variant/30">
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</li>
+<li class="flex items-center gap-sm px-md py-sm rounded-DEFAULT text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span>Support</span>
+</li>
+</ul>
+</nav>
+<!-- TopAppBar (Shared Component) -->
+<header class="hidden md:flex bg-surface dark:bg-surface text-primary dark:text-primary font-label-md text-label-md fixed top-0 right-0 w-[calc(100%-16rem)] h-16 border-b border-outline-variant flex justify-between items-center px-lg z-40 focus-within:border-primary transition-all">
+<!-- Search Bar (on_left logic) -->
+<div class="flex-1 max-w-2xl relative flex items-center group">
+<span class="material-symbols-outlined absolute left-sm text-on-surface-variant group-focus-within:text-primary transition-colors text-[20px]">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface font-body-md pl-[40px] pr-md py-sm placeholder-on-surface-variant outline-none" placeholder="Ask Ellipse..." type="text"/>
+</div>
+<!-- Trailing Actions & Profile -->
+<div class="flex items-center gap-md ml-auto">
+<button class="text-on-surface-variant hover:bg-surface-container transition-all p-sm rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">sensors</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container transition-all p-sm rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden cursor-pointer border border-outline-variant hover:border-primary transition-colors ml-sm">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Professional user profile avatar, minimalist portrait, cinematic lighting, corporate headshot, dark theme background, sharp focus, 8k resolution" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSfDqvg-Y-xBK0-0DqArdyWtQnNYG1wUzOO7KlfgePETeOjC6YmoD56ySDMiW8j1uI6BQmn4AMwnKQ6lrVv8IsmGlPX7WXDxl2nBMZeXd-347FkgDAB168POIcrkYX2np10p7ug0MncNNJJTnjZVq0Fzvr1oncwD7xFAd211-iWeXV69dZRY183d3jLaPxxgAIR59gQoNmdJBHBU-7EZqergcfYB1NNGmc05QzL1ZDbNTvcea4xr0htYJvDN10R2IkHzLslkuni8MD"/>
+</div>
+</div>
+</header>
+<!-- Mobile Header (Simplified for constraints) -->
+<header class="md:hidden flex items-center justify-between px-md py-sm border-b titanium-border bg-surface sticky top-0 z-40">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">Ellipse</h1>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden cursor-pointer border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Professional user profile avatar, minimalist portrait, cinematic lighting, corporate headshot, dark theme background, sharp focus, 8k resolution" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSMHZVQCva2JXsgmY5VHfz1mI24obRvk5_BV1DI_c0mkeXPNWEIeUmU4Lj0mzoMhSB2woJSfH8FI9W3tjfsfNLVia9CdBZvZC9JS9KlpIn3aJ_ipYWRsYqAM9KjX5aqaM-ADLe5vNhp4IRV5jAec57DptyxPkAEkqUv6zGejay91ZCwG2aVhXCmMpYCfqmGWW4Lx9Jcn8gebS3ssNz6OsuW-9lP40s5_Ao-1eDI3X3PBQaY-XQSasVJV0nJLmb0iTubR0tcfVS8QnD"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="md:ml-64 md:pt-16 min-h-screen px-md md:px-lg py-xl max-w-[1200px] mx-auto pb-32 md:pb-xl">
+<!-- Page Header -->
+<div class="mb-xl">
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs uppercase tracking-widest">Operational Overview</p>
+<h2 class="font-display text-display text-on-surface">Today</h2>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Column 1: AI Summary & Decisions (Left - 7 cols) -->
+<div class="md:col-span-7 flex flex-col gap-gutter">
+<!-- What changed since yesterday? -->
+<section class="surface-level-1 titanium-border rounded-lg p-lg hover-surface transition-all">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                            What changed since yesterday?
+                        </h3>
+<span class="font-label-md text-label-md text-on-surface-variant">AI Summary</span>
+</div>
+<div class="space-y-md">
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                            The Q3 Launch deadline has been pulled forward by 48 hours following the steering committee meeting. Project 'Nova' is currently blocked due to pending security sign-offs. Engineering resources have been temporarily reallocated to address the infrastructure spike.
+                        </p>
+<div class="flex flex-wrap gap-sm mt-md">
+<span class="px-sm py-xs border titanium-border rounded-full font-label-md text-label-md text-on-surface bg-surface-level-2">#Q3Launch</span>
+<span class="px-sm py-xs border titanium-border rounded-full font-label-md text-label-md text-on-surface bg-surface-level-2">#ProjectNova</span>
+<span class="px-sm py-xs border titanium-border rounded-full font-label-md text-label-md text-on-surface bg-surface-level-2">#Infra</span>
+</div>
+</div>
+</section>
+<!-- Recent Decisions -->
+<section>
+<div class="flex items-center justify-between mb-sm px-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">Recent Decisions</h3>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-sm">
+<!-- Decision Card 1 -->
+<div class="surface-level-1 titanium-border rounded-lg p-md hover-surface transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-sm">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">gavel</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Architecture Commit</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">2h ago</span>
+</div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-medium mb-xs">Migrate auth services to NextAuth v5</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Decision reached after reviewing security audit. Implementation slated for sprint 12. Deprecating custom JWT solution.</p>
+<div class="mt-md flex items-center justify-between border-t titanium-border pt-sm">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border border-[#1C1C1C] overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="Small professional avatar, side profile, corporate environment, dark background, stark lighting, minimalist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBws2MpbZkqVv8QuvC0vhRhBXsaYH8LKYJUXcO3yVUDNvL8_FWtBQIWieVtDYIxq_xCQM0mTmitymKVW64cCaajkevrEBoAWSwrpGRaQT0E4SHXhamqx3y0xo6aer-N__RS-iXFvPpEfmgQppVHKsoV9hfdNyLQYmNFk_BXspF_VUCtj2HeW9do_97gE74T2D7J7wKCmE-65sKY5aaFcCW4VkXovo1oHA13S98SaHbhruvc8HGa2GLut89HByFerdHMp8mifB_SvKYV"/>
+</div>
+<div class="w-6 h-6 rounded-full border border-[#1C1C1C] overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="Small professional avatar, front facing, corporate environment, dark background, stark lighting, minimalist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzxgWBpi3zMyWH3JvtQwHv_2Vx2x9GxtdK0zVAKCzq1iZCyYObW8NKMGAYzpUmESA8bdZ5NYqIh709dNgxdShkprw9nTkYubxVrOI2Kibzmp16k5DvaDOwm7pFYNjtCK-ck0A9D81AptvGhzH0kt7qDjI0m8cTQkOZN5hy_49NEvqGMmNLrrQV_IlUwT1apP9xzAp_YOUVRuw7MBmm_pIQPmFX3ZsAgksCbqpuZ-RCcqqEu1B5boLg93dMHuk8BcjpWa9uL4J67WOR"/>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary hover:text-primary-fixed transition-colors">Read Context</button>
+</div>
+</div>
+<!-- Decision Card 2 -->
+<div class="surface-level-1 titanium-border rounded-lg p-md hover-surface transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-sm">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">gavel</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Resource Allocation</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">5h ago</span>
+</div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-medium mb-xs">Pause hiring for external marketing agency</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Budget re-allocated internally to support the new design system rollout. Will re-evaluate in Q4.</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Column 2: Blockers & Tasks (Right - 5 cols) -->
+<div class="md:col-span-5 flex flex-col gap-gutter">
+<!-- Critical Blockers -->
+<section class="surface-level-1 titanium-border rounded-lg p-md hover-surface transition-all border-l-4 border-l-error">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-error text-[20px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+                            Critical Blockers
+                        </h3>
+<span class="w-6 h-6 rounded-full bg-error-container text-error flex items-center justify-center font-label-md text-label-md">2</span>
+</div>
+<ul class="flex flex-col gap-sm">
+<li class="pb-sm border-b titanium-border last:border-0 last:pb-0">
+<div class="flex items-start gap-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-error mt-2 shrink-0"></div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">Security Sign-off required for Project Nova</p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Assigned to: Security Team</p>
+</div>
+</div>
+</li>
+<li class="pb-0 border-0">
+<div class="flex items-start gap-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-error mt-2 shrink-0"></div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">Staging environment DB sync failing</p>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Assigned to: DevOps</p>
+</div>
+</div>
+</li>
+</ul>
+</section>
+<!-- My Tasks Due Today -->
+<section>
+<div class="flex items-center justify-between mb-sm px-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">My Tasks Due Today</h3>
+<span class="font-label-md text-label-md text-on-surface-variant">3 Items</span>
+</div>
+<div class="flex flex-col gap-xs">
+<!-- Task 1 -->
+<div class="surface-level-1 titanium-border rounded-lg p-md hover-surface transition-all flex items-start gap-sm group cursor-pointer">
+<div class="w-5 h-5 rounded-sm border-2 border-outline-variant flex items-center justify-center shrink-0 mt-0.5 group-hover:border-primary transition-colors">
+<!-- Checkbox state empty -->
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">Review final copy for Q3 Launch landing page</p>
+<div class="flex items-center gap-xs mt-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]">chat_bubble</span>
+<span class="font-label-md text-label-md text-on-surface-variant">From: Launch Strategy Thread</span>
+</div>
+</div>
+</div>
+<!-- Task 2 -->
+<div class="surface-level-1 titanium-border rounded-lg p-md hover-surface transition-all flex items-start gap-sm group cursor-pointer">
+<div class="w-5 h-5 rounded-sm border-2 border-outline-variant flex items-center justify-center shrink-0 mt-0.5 group-hover:border-primary transition-colors"></div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">Approve Q4 budget allocations</p>
+<div class="flex items-center gap-xs mt-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]">person</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Assigned by: Sarah Jenkins</span>
+</div>
+</div>
+</div>
+<!-- Task 3 -->
+<div class="surface-level-1 titanium-border rounded-lg p-md hover-surface transition-all flex items-start gap-sm group cursor-pointer">
+<div class="w-5 h-5 rounded-sm border-2 border-outline-variant flex items-center justify-center shrink-0 mt-0.5 group-hover:border-primary transition-colors"></div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface">Provide feedback on the new API endpoints</p>
+<div class="flex items-center gap-xs mt-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]">code</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Context: PR #402</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation (Simulated for contextual awareness, though prompt requested specific side nav logic, mobile usually needs a bottom bar if side nav is hidden) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface titanium-border border-t flex justify-around items-center py-sm z-50 px-sm pb-safe">
+<div class="flex flex-col items-center gap-1 text-on-surface cursor-pointer">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">today</span>
+<span class="font-label-md text-[10px] font-bold">Today</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">chat_bubble</span>
+<span class="font-label-md text-[10px]">Chat</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">check_circle</span>
+<span class="font-label-md text-[10px]">Tasks</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">gavel</span>
+<span class="font-label-md text-[10px]">Decisions</span>
+</div>
+</nav>
+</body></html>

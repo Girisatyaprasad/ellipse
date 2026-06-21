@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ellipse - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;900&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#131313",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-secondary": "#2f3131",
+                        "on-tertiary-fixed": "#311400",
+                        "surface-variant": "#353534",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-primary-container": "#00285d",
+                        "inverse-primary": "#005ac2",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "error-container": "#93000a",
+                        "surface-bright": "#3a3939",
+                        "inverse-on-surface": "#313030",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-container": "#201f1f",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "primary-fixed": "#d8e2ff",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-primary": "#002e6a",
+                        "outline-variant": "#424754",
+                        "primary-container": "#4d8eff",
+                        "on-surface-variant": "#c2c6d6",
+                        "tertiary-container": "#df7412",
+                        "on-tertiary": "#502400",
+                        "surface-dim": "#131313",
+                        "tertiary": "#ffb786",
+                        "outline": "#8c909f",
+                        "on-tertiary-container": "#461f00",
+                        "on-secondary-fixed-variant": "#454747",
+                        "primary": "#adc6ff",
+                        "background": "#131313",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed": "#e2e2e2",
+                        "secondary": "#c6c6c7",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-container": "#454747",
+                        "on-background": "#e5e2e1",
+                        "on-primary-fixed": "#001a42",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "surface-tint": "#adc6ff",
+                        "surface-container-highest": "#353534",
+                        "inverse-surface": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "unit": "4px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code": ["JetBrains Mono"],
+                        "label-md": ["Inter"],
+                        "display": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "code": ["13px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .pulse-border {
+            animation: pulse-border 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: theme('colors.primary'); }
+        }
+        
+        /* Subtle faux-highlighting logic to represent the user text matching the entities */
+        .highlight-text {
+            color: theme('colors.on-surface');
+            text-shadow: 0 0 8px rgba(173, 198, 255, 0.2); /* very subtle primary glow */
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Onboarding Canvas (Navigation Suppressed per rules for linear flows) -->
+<main class="flex-grow flex items-center justify-center p-lg md:p-xl w-full max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl w-full min-h-[600px]">
+<!-- Left Column: The Calm Input -->
+<div class="lg:col-span-7 flex flex-col h-full relative">
+<header class="mb-xl">
+<h1 class="font-display text-display text-on-surface mb-sm">Tell us how your organization works.</h1>
+<p class="font-body-lg text-on-surface-variant max-w-lg">Write naturally. Ellipse will instantly map your people, roles, and critical timelines to build your workspace intelligence.</p>
+</header>
+<!-- The Input Canvas -->
+<div class="relative flex-grow flex flex-col">
+<div class="absolute -left-sm top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary via-primary-container to-transparent opacity-50"></div>
+<textarea class="w-full flex-grow bg-transparent border-none outline-none resize-none font-headline-md text-headline-md text-on-surface leading-relaxed focus:ring-0 pl-md placeholder:text-on-surface-variant/30" placeholder="e.g., We are a remote team of 15..." spellcheck="false">Rahul is frontend lead. Marcus handles backend. Design is Aisha and Kevin. We launch next Thursday.</textarea>
+</div>
+<!-- Action Area -->
+<div class="mt-xl flex items-center justify-between border-t border-surface-container-high pt-lg">
+<div class="flex items-center gap-sm text-surface-variant">
+<span class="material-symbols-outlined text-[18px]">keyboard_return</span>
+<span class="font-label-md text-label-md uppercase">Press Enter to finalize</span>
+</div>
+<button class="bg-on-surface text-surface px-lg py-sm rounded-full font-label-md text-label-md uppercase tracking-wider hover:bg-surface-variant hover:text-on-surface transition-colors">
+                        Build Workspace
+                    </button>
+</div>
+</div>
+<!-- Right Column: Real-time Intelligence Extraction (The Magic) -->
+<div class="lg:col-span-5 flex flex-col pt-2 lg:pt-0">
+<div class="sticky top-xl bg-surface-container-lowest border border-surface-container-high rounded-xl p-lg flex flex-col h-full shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+<!-- AI Status Header -->
+<div class="flex items-center justify-between mb-xl pb-md border-b border-surface-container-high">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest">Active Processing</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+<!-- Extracted Entities Bento Grid -->
+<div class="flex flex-col gap-lg overflow-y-auto pr-sm custom-scrollbar">
+<!-- People -->
+<div class="flex flex-col gap-sm">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">group</span> People Identified
+                            </h3>
+<div class="flex flex-wrap gap-sm">
+<div class="px-sm py-xs rounded-md bg-surface-container border border-surface-container-highest flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-surface-bright flex items-center justify-center text-on-surface font-label-md text-[10px]">R</div>
+<span class="font-body-md text-body-md text-on-surface">Rahul</span>
+</div>
+<div class="px-sm py-xs rounded-md bg-surface-container border border-surface-container-highest flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-surface-bright flex items-center justify-center text-on-surface font-label-md text-[10px]">M</div>
+<span class="font-body-md text-body-md text-on-surface">Marcus</span>
+</div>
+<div class="px-sm py-xs rounded-md bg-surface-container border border-surface-container-highest flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-surface-bright flex items-center justify-center text-on-surface font-label-md text-[10px]">A</div>
+<span class="font-body-md text-body-md text-on-surface">Aisha</span>
+</div>
+<div class="px-sm py-xs rounded-md bg-surface-container border border-surface-container-highest flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-surface-bright flex items-center justify-center text-on-surface font-label-md text-[10px]">K</div>
+<span class="font-body-md text-body-md text-on-surface">Kevin</span>
+</div>
+</div>
+</div>
+<!-- Roles -->
+<div class="flex flex-col gap-sm mt-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">work</span> Mapped Roles
+                            </h3>
+<div class="flex flex-col gap-xs border-l-2 border-surface-container-highest pl-md">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">Frontend Lead</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Rahul</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface">Backend</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Marcus</span>
+</div>
+</div>
+</div>
+<!-- Teams -->
+<div class="flex flex-col gap-sm mt-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">account_tree</span> Squads / Teams
+                            </h3>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-[2px] rounded-full border border-outline-variant text-on-surface font-code text-code bg-surface">Engineering</span>
+<span class="px-sm py-[2px] rounded-full border border-outline-variant text-on-surface font-code text-code bg-surface">Design</span>
+</div>
+</div>
+<!-- Deadlines (High Priority Indicator) -->
+<div class="flex flex-col gap-sm mt-md p-md rounded-lg bg-surface-container-high border border-outline-variant/30 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">event_available</span> Key Timelines
+                            </h3>
+<div class="flex items-center justify-between mt-xs">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Launch</span>
+<span class="font-body-md text-body-md text-primary">Next Thursday</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

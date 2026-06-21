@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ellipse - Task Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#131313",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-secondary": "#2f3131",
+                    "on-tertiary-fixed": "#311400",
+                    "surface-variant": "#353534",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-primary-container": "#00285d",
+                    "inverse-primary": "#005ac2",
+                    "surface-container-low": "#1c1b1b",
+                    "surface-container-lowest": "#0e0e0e",
+                    "error-container": "#93000a",
+                    "surface-bright": "#3a3939",
+                    "inverse-on-surface": "#313030",
+                    "on-primary-fixed-variant": "#004395",
+                    "surface-container": "#201f1f",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "primary-fixed": "#d8e2ff",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-primary": "#002e6a",
+                    "outline-variant": "#424754",
+                    "primary-container": "#4d8eff",
+                    "on-surface-variant": "#c2c6d6",
+                    "tertiary-container": "#df7412",
+                    "on-tertiary": "#502400",
+                    "surface-dim": "#131313",
+                    "tertiary": "#ffb786",
+                    "outline": "#8c909f",
+                    "on-tertiary-container": "#461f00",
+                    "on-secondary-fixed-variant": "#454747",
+                    "primary": "#adc6ff",
+                    "background": "#131313",
+                    "on-secondary-container": "#b4b5b5",
+                    "on-surface": "#e5e2e1",
+                    "secondary-fixed": "#e2e2e2",
+                    "secondary": "#c6c6c7",
+                    "surface-container-high": "#2a2a2a",
+                    "secondary-container": "#454747",
+                    "on-background": "#e5e2e1",
+                    "on-primary-fixed": "#001a42",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "surface-tint": "#adc6ff",
+                    "surface-container-highest": "#353534",
+                    "inverse-surface": "#e5e2e1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xs": "4px",
+                    "xl": "40px",
+                    "unit": "4px",
+                    "lg": "24px",
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "code": ["JetBrains Mono"],
+                    "label-md": ["Inter"],
+                    "display": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                    "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                    "code": ["13px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                    "label-md": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                    "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                    "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                    "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "headline-md": ["20px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-primary-fixed-dim selection:text-on-primary">
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface dark:bg-surface py-lg px-md z-40">
+<div class="mb-xl px-sm flex items-center gap-md">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary font-bold">
+                E
+            </div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Ellipse</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Intelligence Hub</p>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">today</span>
+                Today
+            </a>
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chat_bubble</span>
+                Conversations
+            </a>
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface font-bold border-r-2 border-primary hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md bg-surface-container-lowest" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Tasks
+            </a>
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">gavel</span>
+                Decisions
+            </a>
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">timeline</span>
+                Timeline
+            </a>
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">group</span>
+                People
+            </a>
+</div>
+<div class="mt-auto flex flex-col gap-xs pt-md border-t border-surface-container-low">
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help</span>
+                Support
+            </a>
+</div>
+</nav>
+<header class="hidden md:flex justify-between items-center px-lg fixed top-0 right-0 w-[calc(100%-16rem)] h-16 border-b border-outline-variant bg-surface dark:bg-surface z-30">
+<div class="flex-1 max-w-md">
+<div class="relative flex items-center group">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant group-focus-within:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="w-full bg-surface-container-lowest border border-surface-container-low rounded-lg py-2 pl-10 pr-4 text-on-surface font-body-md focus:outline-none focus:border-primary transition-all placeholder:text-on-surface-variant" placeholder="Search knowledge..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md ml-lg">
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-full transition-all focus-within:border-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sensors</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-full transition-all focus-within:border-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sync</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-surface-container-low cursor-pointer hover:border-primary transition-colors">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A macro photography style close up of a smooth dark grey metallic orb with a subtle glowing blue circuit pattern running across its surface, deep cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE5vyLuqyo8GtCAtXawqnPeDbcQQ1z5pkDbRArBriheH-60kVQVJ1AbUiPD-Pb_91ZW3Ju37Qtv6aR35NlKULhlVC3Hk3_cWuqjNT00Uzda4hM41rc59PRNM6XyqxJe5U_HcWqViUqqmLKclP3kUbNKbNIt16LeLvCbGjBGsvLQTVNYiBAC87Gs7rXhe_MbELgfHiX2qWBDUCtEaPmtjzbK3wIBJwqedFX9ylb6VGQ9KOuiDDsLoJqYiIEQWJbE55Pc7rPT67SXdZi"/>
+</div>
+</div>
+</header>
+<main class="md:ml-64 pt-20 md:pt-24 px-md md:px-xl pb-xl max-w-[1000px] mx-auto min-h-screen">
+<div class="mb-xl border-b border-surface-container-low pb-lg">
+<div class="flex items-start justify-between gap-xl">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-sm tracking-tight">Re-sync cluster SYD-4</h1>
+<div class="flex items-center gap-md font-label-md text-label-md text-on-surface-variant">
+<span class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">tag</span>
+                            TSK-8902
+                        </span>
+<span class="w-[4px] h-[4px] rounded-full bg-surface-container-high"></span>
+<span class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                            Due Today
+                        </span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<div class="flex items-center gap-sm bg-surface-container-lowest border border-surface-container-low px-md py-sm rounded-lg">
+<div class="w-[6px] h-[6px] rounded-full bg-[#4d8eff]"></div>
+<span class="font-label-md text-label-md text-on-surface tracking-wider">IN PROGRESS</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
+<div class="bg-surface-container-lowest border border-surface-container-low rounded-lg p-md">
+<div class="font-label-md text-label-md text-on-surface-variant mb-md uppercase tracking-wider">Assignee</div>
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-surface-container-high border border-surface-container-low overflow-hidden">
+<img alt="Marcus Thorne" class="w-full h-full object-cover" data-alt="A sharply focused professional headshot of a software engineer in a dimly lit server room environment, dramatic rim lighting accentuating technical expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBopLmel-RhWk7Ew5YbHDml_KltdJo6Xu8kVFZVC-vtyCTIN-xqxPnh9_N3EejSbJtPQdxExA4fDVswzVaAUMc4SXGAHG7lN0cyRmExMAb4SJt-JYwJa3z_WzuueBmIQRuMv_PxMX2AeiLsbr8RKN5ewb2ZhCA9oZhg2xa0jFNY7EBW7VNliML7l3JNd6AWI0Zg_vbTeqOpaoQXfwGdPCY0nQN9Btvwzkai3EGUryJ4lepQjSj_1PzS-pihWQ8Z3Wktz9pKRzTjCkI-"/>
+</div>
+<div>
+<div class="font-body-md text-body-md text-on-surface font-medium">Marcus Thorne</div>
+<div class="font-code text-code text-on-surface-variant text-[12px]">Infrastructure Ops</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-surface-container-low rounded-lg p-md flex flex-col justify-between">
+<div class="font-label-md text-label-md text-on-surface-variant mb-md uppercase tracking-wider">Source Context</div>
+<a class="group flex items-start gap-sm" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors mt-0.5" style="font-variation-settings: 'FILL' 0;">forum</span>
+<div>
+<div class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors line-clamp-1">Payment Outage thread</div>
+<div class="font-label-md text-label-md text-on-surface-variant mt-1">#incident-response</div>
+</div>
+</a>
+</div>
+<div class="bg-surface-container-lowest border border-surface-container-low rounded-lg p-md flex flex-col justify-between">
+<div class="font-label-md text-label-md text-on-surface-variant mb-md uppercase tracking-wider">Related Decision</div>
+<a class="group flex items-start gap-sm" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors mt-0.5" style="font-variation-settings: 'FILL' 0;">gavel</span>
+<div>
+<div class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors line-clamp-1">Infrastructure Hardening</div>
+<div class="font-label-md text-label-md text-on-surface-variant mt-1">DEC-045</div>
+</div>
+</a>
+</div>
+</div>
+<div class="mt-xl pt-lg border-t border-surface-container-low">
+<div class="flex items-center gap-md mb-xl">
+<span class="material-symbols-outlined text-on-surface">history</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Proof and Lineage</h2>
+</div>
+<div class="relative ml-sm md:ml-md">
+<div class="absolute left-[11px] top-2 bottom-2 w-px bg-surface-container-low"></div>
+<div class="space-y-xl">
+<div class="relative flex gap-md md:gap-xl">
+<div class="absolute left-[-5px] top-[6px] w-[9px] h-[9px] rounded-full bg-surface border-2 border-outline-variant z-10"></div>
+<div class="flex-none w-24 pt-1 hidden md:block">
+<span class="font-code text-code text-on-surface-variant">09:42 AM</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest border border-surface-container-low p-md rounded-lg">
+<div class="flex justify-between items-start mb-sm">
+<div class="font-body-md text-body-md text-on-surface">
+<span class="font-medium">System</span> assigned task to <span class="font-medium">Marcus Thorne</span>
+</div>
+<span class="font-code text-code text-on-surface-variant md:hidden">09:42 AM</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant bg-surface p-sm rounded border border-surface-container-low flex items-start gap-sm mt-md">
+<span class="material-symbols-outlined text-[18px] text-primary">psychology</span>
+<span>Auto-routed based on incident analysis from 'Payment Outage' thread consensus.</span>
+</div>
+</div>
+</div>
+<div class="relative flex gap-md md:gap-xl">
+<div class="absolute left-[-5px] top-[6px] w-[9px] h-[9px] rounded-full bg-surface border-2 border-outline-variant z-10"></div>
+<div class="flex-none w-24 pt-1 hidden md:block">
+<span class="font-code text-code text-on-surface-variant">10:15 AM</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest border border-surface-container-low p-md rounded-lg">
+<div class="flex justify-between items-start mb-sm">
+<div class="font-body-md text-body-md text-on-surface">
+<span class="font-medium">Sarah Jenkins</span> changed priority
+                                </div>
+<span class="font-code text-code text-on-surface-variant md:hidden">10:15 AM</span>
+</div>
+<div class="flex items-center gap-sm mt-sm">
+<span class="font-label-md text-label-md text-on-surface-variant border border-surface-container-low px-2 py-1 rounded bg-surface line-through">P2 - Standard</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_forward</span>
+<span class="font-label-md text-label-md text-on-error border border-error-container/30 px-2 py-1 rounded bg-error-container/10">P1 - Critical</span>
+</div>
+</div>
+</div>
+<div class="relative flex gap-md md:gap-xl">
+<div class="absolute left-[-5px] top-[6px] w-[9px] h-[9px] rounded-full bg-surface border-2 border-error z-10"></div>
+<div class="flex-none w-24 pt-1 hidden md:block">
+<span class="font-code text-code text-on-surface-variant">11:03 AM</span>
+</div>
+<div class="flex-1 border border-[#3a1a1a] bg-[#1a0f0f] p-md rounded-lg">
+<div class="flex justify-between items-start mb-sm">
+<div class="font-body-md text-body-md text-error flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span class="font-medium">Blocker Reported</span> by Marcus Thorne
+                                </div>
+<span class="font-code text-code text-on-surface-variant md:hidden">11:03 AM</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-sm">
+                                "Unable to acquire lock on database shard 7. Seems a background migration process is stuck. Need DBA intervention before proceeding with cluster sync."
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ellipse - Memory Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#d8e3fb",
+                        "outline": "#8e9195",
+                        "on-surface": "#e5e2e1",
+                        "on-tertiary-fixed": "#111c2d",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "surface-variant": "#353534",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed": "#d8e3fb",
+                        "surface-container-low": "#1c1b1b",
+                        "on-background": "#e5e2e1",
+                        "secondary-container": "#3a4a5f",
+                        "primary-fixed-dim": "#c1c7cf",
+                        "on-surface-variant": "#c5c6cb",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary-fixed": "#d3e4fe",
+                        "primary-fixed": "#dde3eb",
+                        "surface-container": "#201f1f",
+                        "secondary": "#b7c8e1",
+                        "on-primary-fixed": "#161c22",
+                        "on-tertiary-container": "#5a6579",
+                        "on-primary-container": "#5f656c",
+                        "tertiary": "#ffffff",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary": "#263143",
+                        "primary": "#ffffff",
+                        "surface-tint": "#c1c7cf",
+                        "inverse-surface": "#e5e2e1",
+                        "outline-variant": "#44474a",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#131313",
+                        "on-secondary": "#213145",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#3a3939",
+                        "on-primary-fixed-variant": "#41474e",
+                        "surface": "#131313",
+                        "on-primary": "#2b3137",
+                        "on-secondary-fixed": "#0b1c30",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "background": "#131313",
+                        "on-error": "#690005",
+                        "inverse-primary": "#595f66",
+                        "primary-container": "#dde3eb",
+                        "on-secondary-container": "#a9bad3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "xxl": "80px",
+                        "margin": "48px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "label-md": ["Geist"],
+                        "headline-md": ["Inter"],
+                        "code-sm": ["Geist"],
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["20px", { "lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .glass-panel { background: rgba(26, 26, 26, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .inner-glow { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1); }
+        .lead-line { width: 2px; background: rgba(255,255,255,0.05); }
+        
+        /* Subtle pulse animation for nodes */
+        @keyframes subtlePulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.5; }
+        }
+        .animate-node-pulse { animation: subtlePulse 4s infinite ease-in-out; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex selection:bg-surface-container-high selection:text-primary overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface-dim/80 backdrop-blur-xl fixed top-0 right-0 w-[calc(100%-256px)] z-50 bg-surface-dim/80 border-b border-white/5 flex justify-between items-center px-gutter h-16 transition-all duration-300">
+<div class="flex items-center gap-md">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-xs font-label-md text-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-opacity" href="#">Organizational Memory</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary">Decision Analysis</span>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-opacity flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sensors</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-opacity flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-opacity flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-surface-dim dark:bg-surface-dim h-screen w-64 fixed left-0 top-0 bg-surface-dim border-r border-white/5 flex flex-col h-full p-lg transition-all duration-200 ease-in-out z-50">
+<div class="mb-xl">
+<div class="font-display-lg text-display-lg tracking-tighter text-primary">Ellipse</div>
+<div class="font-label-md text-label-md text-on-surface-variant mt-sm uppercase tracking-widest opacity-60">Organizational Intelligence</div>
+</div>
+<div class="flex-1 flex flex-col gap-sm mt-md">
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary transition-colors">group</span>
+<span class="font-label-md text-label-md">People</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary transition-colors">chat_bubble</span>
+<span class="font-label-md text-label-md">Conversations</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary transition-colors">task_alt</span>
+<span class="font-label-md text-label-md">Tasks</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary transition-colors">event</span>
+<span class="font-label-md text-label-md">Meetings</span>
+</a>
+<a class="flex items-center gap-md p-sm text-primary font-bold bg-surface-container-high/50 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px] text-primary" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="font-label-md text-label-md">Decisions</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-high/30 rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary transition-colors">timeline</span>
+<span class="font-label-md text-label-md">Timelines</span>
+</a>
+</div>
+<div class="mt-auto pt-lg border-t border-white/5">
+<button class="w-full flex items-center justify-between p-sm text-on-surface-variant hover:text-primary bg-surface-container-lowest border border-white/5 rounded-lg hover:border-white/10 transition-all font-code-sm text-code-sm">
+<span>Search Intelligence...</span>
+<span class="opacity-50">Command K</span>
+</button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="ml-64 mt-16 p-xxl w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-xl">
+<!-- Left Column: Inquiry & Evidence -->
+<div class="flex-1 flex flex-col gap-xl">
+<!-- Synthesized Answer Header -->
+<section class="flex flex-col gap-md animate-[fadeIn_0.5s_ease-out]">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Why was the V2.4 launch delayed?</h1>
+<div class="glass-panel inner-glow rounded-xl p-lg relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-fixed-dim/30"></div>
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-primary-fixed-dim mt-1" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div class="flex flex-col gap-sm">
+<p class="font-body-lg text-body-lg text-on-background leading-relaxed">
+                                The V2.4 launch was primarily delayed by a critical security vulnerability discovered during the final penetration test on Oct 12th. Secondary factors included resource reallocation to support the Enterprise Client Q3 migration and unresolved dependencies in the new authentication microservice.
+                            </p>
+<div class="flex gap-sm mt-2">
+<span class="px-2 py-1 rounded-sm bg-surface-container border border-white/5 font-label-md text-label-md text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+                                    Delay: 14 Days
+                                </span>
+<span class="px-2 py-1 rounded-sm bg-error/10 border border-error/20 font-label-md text-label-md text-error flex items-center gap-xs">
+<span class="material-symbols-outlined text-[12px]">security</span>
+                                    Security Blocker
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Evidence Trail (Node & Canvas Layout) -->
+<section class="flex flex-col gap-lg mt-xl">
+<div class="flex items-center gap-sm">
+<h2 class="font-headline-md text-headline-md text-primary">Evidence Trail</h2>
+<div class="h-px bg-white/5 flex-1 ml-4"></div>
+</div>
+<div class="relative pl-6">
+<!-- Timeline Lead Line -->
+<div class="absolute top-4 bottom-4 left-0 w-px bg-white/10 ml-[-1px]"></div>
+<!-- Node 1: Task Change -->
+<div class="relative mb-lg group">
+<div class="absolute -left-[27px] top-4 w-2 h-2 rounded-full bg-surface-dim border-2 border-primary z-10 animate-node-pulse"></div>
+<div class="glass-panel rounded-lg p-md transition-all hover:bg-surface-container-high/20 border border-white/5 hover:border-white/10">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">task_alt</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Jira Ticket Updated</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant opacity-60">Oct 12, 14:30 PST</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-background mb-sm">
+                                "Blocked by SEC-492: Auth token leakage in specific edge cases. Moving launch date to Oct 26 pending patch."
+                            </div>
+<div class="flex items-center gap-sm mt-xs">
+<div class="w-5 h-5 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A macro, extremely detailed close-up of a premium, abstract geometric avatar. Dark titanium sphere glowing with subtle blue edge-lighting against a pure black background. Minimalist 3D render, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmydd0-E88dpS8inZclPwsL-UyR4b_9jUvsiVFXba4iYINunXM-Awc0QVvyz26wpkGJFwWzeiYjMtr4ehyTq3nuHQPsP8cNFApKGx5DsrRch9U9RRJYfNjfOe7kdhDEeDhUasHagkkEKXkIsa_8xM62l3pc0U9oJL56jaoQ44LG2_gZa7gktF4xg06YjP-wd6n95aO3mxgo93oWN_h1E5ueiqFTYRK_LUuU-TPO-tAFUHVnFvaA546NuiPM_1QCwEjvlIw8BTgKp43"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Sarah Chen</span>
+</div>
+</div>
+</div>
+<!-- Node 2: Meeting Transcript -->
+<div class="relative mb-lg group">
+<div class="absolute -left-[27px] top-4 w-2 h-2 rounded-full bg-surface-dim border-2 border-secondary-fixed z-10 animate-node-pulse" style="animation-delay: 1s;"></div>
+<div class="glass-panel rounded-lg p-md transition-all hover:bg-surface-container-high/20 border border-white/5 hover:border-white/10">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed">event</span>
+<span class="font-label-md text-label-md text-secondary-fixed">Engineering Sync (Transcript)</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant opacity-60">Oct 13, 09:00 PST</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant italic pl-md border-l-2 border-white/10">
+                                "...we can't ship this until the auth service is verified. The migration took longer than expected, taking resources away from the final QA pass."
+                            </div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Contextual Relationships -->
+<aside class="w-full lg:w-80 flex flex-col gap-xl">
+<!-- Related People -->
+<div class="flex flex-col gap-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest opacity-60">Key Actors</h3>
+<div class="flex flex-col gap-sm">
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-container-high/20 border border-transparent hover:border-white/5 transition-all cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container ring-1 ring-white/10">
+<img class="w-full h-full object-cover" data-alt="Minimalist architectural portrait photo of a professional woman in a dimly lit, modern server room. Cinematic dark mode lighting, subtle teal reflections, high-end corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFjHtvouPbZw0lGfmCPDZsdD2f_sH6Eof0pICfPjcpvf6ZhMPwqA0qp2EOWOwfZlcSYayqXNaFMUoFoiCryLaCXu2RYPo_HhwYznR_dDnzfdLeKwj4YnsjhZUxnF2rEVC1zhXKvak0M0cwCsJiPUC8Shdhk3i5DLk12Y4yj1UFzlB0NTXXaxHDWH0qR5xyQ0SlpCOHcBPDKIa2Y87SONxe5_B6xGlPAeTQwzN5zRDz9ciHURGwhHEWwtk554aU-Z2AdBYaef0X27Qj"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-background">Sarah Chen</span>
+<span class="font-label-md text-label-md text-on-surface-variant opacity-70">Lead Security</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant opacity-50">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Related Decisions / Entities -->
+<div class="flex flex-col gap-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest opacity-60">Contextual Web</h3>
+<div class="glass-panel p-md rounded-lg flex flex-col gap-sm">
+<div class="flex items-center gap-xs font-label-md text-label-md text-on-surface-variant mb-xs">
+<span class="material-symbols-outlined text-[14px]">account_tree</span>
+                        Dependencies
+                    </div>
+<a class="group flex items-center justify-between p-xs rounded hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></div>
+<span class="font-body-sm text-body-sm text-on-background group-hover:text-primary transition-colors">Auth Microservice V3</span>
+</div>
+</a>
+<a class="group flex items-center justify-between p-xs rounded hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-outline"></div>
+<span class="font-body-sm text-body-sm text-on-background group-hover:text-primary transition-colors">Q3 Enterprise Migration</span>
+</div>
+</a>
+</div>
+</div>
+</aside>
+</main>
+<script>
+        // Simple progressive disclosure interaction for nodes if needed
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.addEventListener('click', () => {
+                panel.classList.toggle('border-white/20');
+            });
+        });
+    </script>
+</body></html>

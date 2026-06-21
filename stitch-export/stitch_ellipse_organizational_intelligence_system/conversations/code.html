@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ellipse - Conversation Core</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#131313",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-secondary": "#2f3131",
+                        "on-tertiary-fixed": "#311400",
+                        "surface-variant": "#353534",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-primary-container": "#00285d",
+                        "inverse-primary": "#005ac2",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "error-container": "#93000a",
+                        "surface-bright": "#3a3939",
+                        "inverse-on-surface": "#313030",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-container": "#201f1f",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "primary-fixed": "#d8e2ff",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-primary": "#002e6a",
+                        "outline-variant": "#424754",
+                        "primary-container": "#4d8eff",
+                        "on-surface-variant": "#c2c6d6",
+                        "tertiary-container": "#df7412",
+                        "on-tertiary": "#502400",
+                        "surface-dim": "#131313",
+                        "tertiary": "#ffb786",
+                        "outline": "#8c909f",
+                        "on-tertiary-container": "#461f00",
+                        "on-secondary-fixed-variant": "#454747",
+                        "primary": "#adc6ff",
+                        "background": "#131313",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed": "#e2e2e2",
+                        "secondary": "#c6c6c7",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-container": "#454747",
+                        "on-background": "#e5e2e1",
+                        "on-primary-fixed": "#001a42",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "surface-tint": "#adc6ff",
+                        "surface-container-highest": "#353534",
+                        "inverse-surface": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "unit": "4px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code": ["JetBrains Mono"],
+                        "label-md": ["Inter"],
+                        "display": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "code": ["13px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.surface-variant'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline'); }
+        
+        /* Subtle titanium borders for separation */
+        .border-titanium { border-color: #1C1C1C; }
+        .bg-level-1 { background-color: #0D0D0D; }
+        
+        .message-user { border: 1px solid #1C1C1C; background: transparent; }
+        .message-ai { background-color: #0D0D0D; border: none; }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased bg-background text-on-background">
+<!-- TopAppBar from JSON -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-surface dark:bg-surface flex justify-between items-center px-lg ml-64 border-b border-outline-variant z-10 flat no shadows text-primary dark:text-primary font-label-md text-label-md">
+<div class="flex items-center gap-md">
+<!-- Empty space for search if it was on left, but we just use title for now or active context -->
+<span class="font-headline-md text-headline-md font-black text-on-surface">Project Quantum</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:bg-surface-container transition-all p-xs rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sensors</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container transition-all p-xs rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sync</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden ml-sm border border-titanium">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A macro, extremely detailed portrait of an abstract metallic sphere floating in a deep dark obsidian space. Lighting is high-key cinematic from one side, creating a pristine bright highlight on the edge. The sphere reflects geometric, minimalist patterns. The overall aesthetic is ultra-modern, clinical, dark-mode, and highly professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1zEtnDoOYMbRVFh1YS4BmzuXj1n57AJvsixOVbKpD6vgJ1WpEiNc1I1UE1qVhYZIWu9WRKlGzgbxLYiIdvK2FuKSiQfN5isbPQiTWx0ZJJE4rhj67SBbrtc-ke6erBohfBG8ic015K2YqTD3xbKoPOAbezjM6SFJBrT3t5e_Hw6-nGR5xghBUSXLl1l_ab1QCeg9mpwu15q3xHQaMYc9Lag59sFGuex3bKyJIXOhburwSvo4X9X1wf-ffN5Ic84L5HpnPh8xFUOVt"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar from JSON -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-surface dark:bg-surface border-r border-outline-variant flex flex-col h-full py-lg px-md z-20 flat no shadows font-body-md text-body-md text-primary dark:text-primary">
+<div class="mb-xl px-sm flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="font-headline-md text-headline-md font-bold">E</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md font-bold text-on-surface leading-none">Ellipse</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">Intelligence Hub</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="flex flex-col gap-xs">
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">today</span>
+<span>Today</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface font-bold border-r-2 border-primary bg-surface-container-high cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span>Conversations</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">check_circle</span>
+<span>Tasks</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span>Decisions</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span>Timeline</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>People</span>
+</a>
+</li>
+</ul>
+<div class="mt-lg pt-md border-t border-titanium px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-sm block">Active Contexts</span>
+<ul class="flex flex-col gap-xs">
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer" href="#">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="truncate">Project Quantum</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer" href="#">
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+<span class="truncate">Q4 Logistics Strategy</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-titanium">
+<ul class="flex flex-col gap-xs">
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors rounded cursor-pointer active:scale-95" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-64 mt-16 flex h-[calc(100vh-4rem)] bg-background">
+<!-- Conversation Core (Center) -->
+<section class="flex-1 flex flex-col border-r border-titanium max-w-container-max mx-auto relative">
+<!-- Message Stream -->
+<div class="flex-1 overflow-y-auto px-lg py-xl flex flex-col gap-lg pb-32">
+<!-- Date Separator -->
+<div class="flex items-center justify-center gap-sm my-md">
+<div class="h-px w-12 bg-titanium border-titanium border-t"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">TODAY</span>
+<div class="h-px w-12 bg-titanium border-titanium border-t"></div>
+</div>
+<!-- Message Group: User -->
+<div class="flex flex-col gap-[12px] max-w-3xl ml-auto w-full items-end">
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">Marcus</span>
+</div>
+<div class="message-user rounded-xl rounded-tr-sm p-md text-on-surface max-w-[85%]">
+<p>We need to finalize the infrastructure pivot before the end of the week. The current node setup is bottlenecking during peak hours.</p>
+</div>
+<div class="message-user rounded-xl rounded-tr-sm p-md text-on-surface max-w-[85%] relative group" id="msg-1">
+<p>I propose we adopt Rust for Core. It'll give us the memory safety we need and lower overhead. Also, can someone ensure we sync secrets to SYD-4? That cluster is currently isolated.</p>
+<button class="absolute top-2 -left-8 opacity-0 group-hover:opacity-100 text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">link</span>
+</button>
+</div>
+</div>
+<!-- Message Group: AI/System -->
+<div class="flex flex-col gap-[12px] max-w-3xl mr-auto w-full items-start mt-lg">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Ellipse AI</span>
+</div>
+<div class="message-ai rounded-xl rounded-tl-sm p-md text-on-surface max-w-[85%] relative group" id="msg-2">
+<p>Analyzing the proposal to adopt Rust for Core. Based on historical data from similar migrations in Project Delta, this could reduce bottleneck latency by approximately 40%, but requires a 2-week ramp-up for the backend team.</p>
+<p class="mt-sm">I have extracted the task regarding SYD-4 and the decision point for Rust.</p>
+<button class="absolute top-2 -right-8 opacity-0 group-hover:opacity-100 text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">link</span>
+</button>
+</div>
+</div>
+<!-- Message Group: User 2 -->
+<div class="flex flex-col gap-[12px] max-w-3xl ml-auto w-full items-end mt-lg">
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">Sarah</span>
+</div>
+<div class="message-user rounded-xl rounded-tr-sm p-md text-on-surface max-w-[85%] relative group" id="msg-3">
+<p>I agree with the Rust pivot. However, we have a major blocker: the legacy auth service hasn't been decoupled yet. We can't migrate until that's containerized.</p>
+<button class="absolute top-2 -left-8 opacity-0 group-hover:opacity-100 text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">link</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="absolute bottom-0 w-full p-md bg-gradient-to-t from-background via-background to-transparent pt-xl">
+<div class="max-w-3xl mx-auto relative group">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined">add</span>
+</div>
+<input class="w-full bg-level-1 border-b border-titanium border-t-0 border-l-0 border-r-0 focus:ring-0 focus:border-primary text-on-surface py-md pl-xl pr-xl rounded-t-sm transition-colors placeholder:text-on-surface-variant font-body-md" placeholder="Type a message or command..." type="text"/>
+<button class="absolute inset-y-0 right-0 pr-sm flex items-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Intelligence Panel (Right) -->
+<aside class="w-80 bg-level-1 border-l border-titanium flex flex-col h-full flex-shrink-0">
+<div class="p-md border-b border-titanium flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Extracted Intelligence</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">auto_awesome</span>
+</div>
+<div class="flex-1 overflow-y-auto p-md flex flex-col gap-lg">
+<!-- Section: Tasks -->
+<div>
+<div class="flex items-center gap-xs mb-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<h3 class="font-label-md text-label-md">Tasks</h3>
+</div>
+<div class="bg-surface border border-titanium rounded-lg p-sm flex flex-col gap-sm relative group hover:border-outline-variant transition-colors">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md text-on-surface leading-tight pr-4">Sync secrets to SYD-4</span>
+<div class="w-6 h-6 rounded-full bg-surface-container-high border border-titanium flex items-center justify-center flex-shrink-0 text-xs text-on-surface">M</div>
+</div>
+<div class="flex justify-between items-center mt-xs">
+<div class="flex items-center gap-xs">
+<div class="w-1.5 h-1.5 rounded-full bg-outline"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Pending</span>
+</div>
+<!-- Subtle source link -->
+<a class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-[2px]" href="#msg-1">
+<span class="material-symbols-outlined text-[10px]">turn_left</span>
+                                Source
+                            </a>
+</div>
+</div>
+</div>
+<!-- Section: Decisions -->
+<div>
+<div class="flex items-center gap-xs mb-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">gavel</span>
+<h3 class="font-label-md text-label-md">Decisions</h3>
+</div>
+<div class="bg-surface border border-titanium rounded-lg p-sm flex flex-col gap-sm relative group hover:border-outline-variant transition-colors">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md text-on-surface leading-tight pr-4">Adopt Rust for Core backend migration</span>
+<span class="material-symbols-outlined text-primary text-sm">verified</span>
+</div>
+<div class="flex justify-between items-center mt-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">Proposed by Marcus</span>
+<!-- Subtle source link -->
+<a class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-[2px]" href="#msg-1">
+<span class="material-symbols-outlined text-[10px]">turn_left</span>
+                                Source
+                            </a>
+</div>
+</div>
+</div>
+<!-- Section: Blockers -->
+<div>
+<div class="flex items-center gap-xs mb-sm text-error">
+<span class="material-symbols-outlined text-sm">block</span>
+<h3 class="font-label-md text-label-md">Blockers</h3>
+</div>
+<div class="bg-surface border border-titanium border-l-2 border-l-error rounded-lg p-sm flex flex-col gap-sm relative group hover:border-outline-variant transition-colors">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md text-on-surface leading-tight pr-4">Legacy auth service not decoupled</span>
+</div>
+<div class="flex justify-between items-center mt-xs">
+<div class="flex items-center gap-xs">
+<div class="w-1.5 h-1.5 rounded-sm bg-outline"></div>
+<span class="font-label-md text-label-md text-on-surface-variant">Unresolved</span>
+</div>
+<!-- Subtle source link -->
+<a class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-[2px]" href="#msg-3">
+<span class="material-symbols-outlined text-[10px]">turn_left</span>
+                                Source
+                            </a>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</body></html>
