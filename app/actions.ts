@@ -4,6 +4,8 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { shouldAutoConfirmTestUsers } from "@/lib/supabase/config";
 import { extractArtifactsFromMessage } from "@/lib/ai/extract-message";
 
 function formString(formData: FormData, key: string) {
@@ -66,6 +68,22 @@ export async function signUp(formData: FormData) {
   if (error) redirectWithError("/register", error.message);
 
   if (!data.session) {
+    if (shouldAutoConfirmTestUsers() && data.user) {
+      const admin = createAdminClient();
+      const { error: confirmError } = await admin.auth.admin.updateUserById(data.user.id, { email_confirm: true });
+
+      if (confirmError) {
+        redirectWithError("/register", `Account created, but test auto-confirm failed: ${confirmError.message}`);
+      }
+
+      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+      if (loginError) {
+        redirectWithMessage("/login", "Account created and confirmed for testing. Login with your email and password.");
+      }
+
+      redirect("/app");
+    }
+
     redirectWithMessage("/login", "Account created. Check your email to confirm your account, then login.");
   }
 

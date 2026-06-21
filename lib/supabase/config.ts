@@ -12,3 +12,18 @@ export function getSupabaseEnv() {
 
   return { url, anonKey };
 }
+
+export function getSupabaseServiceRoleEnv() {
+  const { url } = getSupabaseEnv();
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!serviceRoleKey) {
+    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY.");
+  }
+
+  return { url, serviceRoleKey };
+}
+
+export function shouldAutoConfirmTestUsers() {
+  return process.env.SUPABASE_AUTO_CONFIRM_TEST_USERS === "true";
+}
