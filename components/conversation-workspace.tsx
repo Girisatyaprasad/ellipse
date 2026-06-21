@@ -1,5 +1,5 @@
-import { Check, FileCheck2, Link2, Send, Sparkles, X } from "lucide-react";
-import { createArtifact, reviewArtifact, sendMessage, updateArtifact } from "@/app/actions";
+import { Check, Link2, Send, Sparkles, X } from "lucide-react";
+import { reviewArtifact, sendMessage, updateArtifact } from "@/app/actions";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -59,65 +59,12 @@ function ArtifactBadge({ type }: { type: Artifact["type"] }) {
   );
 }
 
-function CreateArtifactForm({
-  workspaceId,
-  conversationId,
-  message,
-}: {
-  workspaceId?: string;
-  conversationId?: string;
-  message: Message;
-}) {
-  if (!workspaceId || !conversationId) return null;
-
-  return (
-    <details className="mt-2 max-w-xl rounded-md border border-white/[0.06] bg-surface-0 px-3 py-2">
-      <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-white">Create Artifact</summary>
-      <form action={createArtifact} className="mt-3 space-y-2">
-        <input type="hidden" name="workspaceId" value={workspaceId} />
-        <input type="hidden" name="conversationId" value={conversationId} />
-        <input type="hidden" name="messageId" value={message.id} />
-        <input type="hidden" name="sourceQuote" value={message.body} />
-        <div className="grid grid-cols-3 gap-2">
-          <select name="type" className="h-9 rounded-md border border-white/[0.08] bg-surface-1 px-2 text-xs text-white focus:outline-none">
-            <option value="task">Task</option>
-            <option value="decision">Decision</option>
-            <option value="blocker">Blocker</option>
-          </select>
-          <input
-            name="title"
-            required
-            className="col-span-2 h-9 rounded-md border border-white/[0.08] bg-surface-1 px-3 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
-            placeholder="Artifact title"
-          />
-        </div>
-        <textarea
-          name="summary"
-          className="min-h-16 w-full resize-none rounded-md border border-white/[0.08] bg-surface-1 px-3 py-2 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
-          placeholder="Optional note"
-        />
-        <div className="rounded-md border border-white/[0.06] bg-surface-1 p-2 text-xs leading-5 text-muted-foreground">
-          Source quote: &quot;{message.body}&quot;
-        </div>
-        <Button size="sm" variant="secondary">
-          <FileCheck2 className="h-3.5 w-3.5" />
-          Create pending artifact
-        </Button>
-      </form>
-    </details>
-  );
-}
-
 function MessageRow({
   message,
   currentUserId,
-  workspaceId,
-  conversationId,
 }: {
   message: Message;
   currentUserId?: string;
-  workspaceId?: string;
-  conversationId?: string;
 }) {
   const own = Boolean(currentUserId && message.created_by === currentUserId);
 
@@ -135,7 +82,6 @@ function MessageRow({
       >
         {message.body}
       </div>
-      <CreateArtifactForm workspaceId={workspaceId} conversationId={conversationId} message={message} />
     </article>
   );
 }
@@ -291,8 +237,6 @@ export function ConversationWorkspace({
                   key={message.id}
                   message={message}
                   currentUserId={userId}
-                  workspaceId={workspace?.id}
-                  conversationId={activeConversation?.id}
                 />
               ))}
             </div>

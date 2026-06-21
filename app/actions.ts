@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { extractArtifactsFromMessage } from "@/lib/ai/extract-message";
 
 function formString(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -134,15 +135,54 @@ export async function sendMessage(formData: FormData) {
 
   const authorName = userData.user.email?.split("@")[0] || "You";
 
-  const { error } = await supabase.from("messages").insert({
-    workspace_id: workspaceId,
-    conversation_id: conversationId,
-    author_name: authorName,
-    body,
-    created_by: userData.user.id,
-  });
+  const { data: message, error } = await supabase
+    .from("messages")
+    .insert({
+      workspace_id: workspaceId,
+      conversation_id: conversationId,
+      author_name: authorName,
+      body,
+      created_by: userData.user.id,
+    })
+    .select("id, body")
+    .single();
 
   if (error) redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, error.message);
+
+  if (message) {
+    const extractedArtifacts = await extractArtifactsFromMessage(message.body);
+
+    for (const extractedArtifact of extractedArtifacts) {
+      const { data: artifact, error: artifactError } = await supabase
+        .from("artifacts")
+        .insert({
+          workspace_id: workspaceId,
+          conversation_id: conversationId,
+          type: extractedArtifact.type,
+          status: "pending",
+          title: extractedArtifact.title,
+          summary: extractedArtifact.summary,
+          created_by: userData.user.id,
+          created_by_email: userData.user.email,
+        })
+        .select("id")
+        .single();
+
+      if (artifactError || !artifact) {
+        redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, artifactError?.message ?? "Could not create extracted artifact.");
+      }
+
+      const { error: sourceError } = await supabase.from("artifact_sources").insert({
+        artifact_id: artifact.id,
+        message_id: message.id,
+        quote: extractedArtifact.sourceQuote || message.body,
+      });
+
+      if (sourceError) {
+        redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, sourceError.message);
+      }
+    }
+  }
 
   revalidatePath(`/workspaces/${workspaceId}/conversations/${conversationId}`);
 }
