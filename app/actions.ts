@@ -38,7 +38,7 @@ export async function signIn(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     if (error.message.toLowerCase().includes("email not confirmed")) {
-      redirectWithMessage("/login", "Email not confirmed. Confirm your email first, or disable email confirmation in Supabase Auth settings for local development.");
+      redirectWithMessage("/login", "Use a confirmed email.");
     }
 
     redirectWithError("/login", error.message);
