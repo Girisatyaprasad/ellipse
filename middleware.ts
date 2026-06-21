@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { hasSupabaseEnv, getSupabaseEnv } from "@/lib/supabase/config";
 
-const publicRoutes = new Set(["/", "/login", "/auth/callback"]);
+const publicRoutes = new Set(["/", "/login", "/register", "/auth/callback"]);
 
 export async function middleware(request: NextRequest) {
   if (publicRoutes.has(request.nextUrl.pathname)) {

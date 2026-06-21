@@ -1,10 +1,10 @@
-import { signIn } from "@/app/actions";
+import { signUp } from "@/app/actions";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function LoginPage({
+export default async function RegisterPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string; message?: string }>;
@@ -24,8 +24,8 @@ export default async function LoginPage({
         <Link href="/" className="mb-6 inline-flex text-sm text-muted-foreground hover:text-white">
           Back to landing
         </Link>
-        <h1 className="text-xl font-semibold text-white">Login to Ellipse</h1>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">Use your confirmed account to open your workspace.</p>
+        <h1 className="text-xl font-semibold text-white">Register for Ellipse</h1>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">Create your account. If email confirmation is enabled, you will need to confirm before login.</p>
 
         {!hasSupabaseEnv() ? (
           <div className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
@@ -55,16 +55,22 @@ export default async function LoginPage({
             className="h-10 w-full rounded-md border border-white/[0.08] bg-surface-0 px-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none"
             placeholder="Password"
           />
-          <div className="grid grid-cols-2 gap-2">
-            <button formAction={signIn} className="col-span-2 h-10 rounded-md bg-white text-sm font-medium text-black">
-              Login
-            </button>
-          </div>
+          <input
+            name="confirmPassword"
+            type="password"
+            required
+            minLength={6}
+            className="h-10 w-full rounded-md border border-white/[0.08] bg-surface-0 px-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none"
+            placeholder="Confirm password"
+          />
+          <button formAction={signUp} className="h-10 w-full rounded-md bg-white text-sm font-medium text-black">
+            Register
+          </button>
         </form>
         <p className="mt-5 text-center text-sm text-muted-foreground">
-          Need an account?{" "}
-          <Link href="/register" className="text-white hover:underline">
-            Register
+          Already have an account?{" "}
+          <Link href="/login" className="text-white hover:underline">
+            Login
           </Link>
         </p>
       </div>

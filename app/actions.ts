@@ -33,7 +33,13 @@ export async function signIn(formData: FormData) {
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) redirectWithError("/login", error.message);
+  if (error) {
+    if (error.message.toLowerCase().includes("email not confirmed")) {
+      redirectWithMessage("/login", "Email not confirmed. Please confirm your email first, then login.");
+    }
+
+    redirectWithError("/login", error.message);
+  }
 
   redirect("/app");
 }
@@ -41,8 +47,13 @@ export async function signIn(formData: FormData) {
 export async function signUp(formData: FormData) {
   const email = formString(formData, "email");
   const password = formString(formData, "password");
+  const confirmPassword = formString(formData, "confirmPassword");
   const supabase = await createClient();
   const origin = await getOrigin();
+
+  if (password !== confirmPassword) {
+    redirectWithError("/register", "Passwords do not match.");
+  }
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -51,10 +62,10 @@ export async function signUp(formData: FormData) {
       emailRedirectTo: origin ? `${origin}/auth/callback?next=/app` : undefined,
     },
   });
-  if (error) redirectWithError("/login", error.message);
+  if (error) redirectWithError("/register", error.message);
 
   if (!data.session) {
-    redirectWithMessage("/login", "Check your email to confirm your account, then sign in.");
+    redirectWithMessage("/register", "Account created. Check your email to confirm your account, then login.");
   }
 
   redirect("/app");

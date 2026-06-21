@@ -52,10 +52,10 @@ export default async function LandingPage() {
             </Link>
           ) : null}
           <Link href="/login" className="rounded-md px-3 py-2 text-sm text-[#f4efe7]/70 hover:text-[#f4efe7]">
-            Sign in
+            Login
           </Link>
-          <Link href="/login" className="rounded-md bg-[#f4efe7] px-3 py-2 text-sm font-medium text-[#070b12] hover:bg-[#fffaf0]">
-            Get started
+          <Link href="/register" className="rounded-md bg-[#f4efe7] px-3 py-2 text-sm font-medium text-[#070b12] hover:bg-[#fffaf0]">
+            Register
           </Link>
         </nav>
       </header>
@@ -68,11 +68,11 @@ export default async function LandingPage() {
           Ellipse turns team conversations into memory, execution, and proof.
         </p>
         <div className="mt-9 flex items-center gap-3">
-          <Link href="/login" className="rounded-md bg-[#f4efe7] px-5 py-3 text-sm font-medium text-[#070b12] hover:bg-[#fffaf0]">
-            Get started
+          <Link href="/register" className="rounded-md bg-[#f4efe7] px-5 py-3 text-sm font-medium text-[#070b12] hover:bg-[#fffaf0]">
+            Register
           </Link>
           <Link href="/login" className="rounded-md border border-[#f4efe7]/14 px-5 py-3 text-sm font-medium text-[#f4efe7]/82 hover:border-[#f4efe7]/28 hover:text-[#f4efe7]">
-            Sign in
+            Login
           </Link>
         </div>
       </section>
