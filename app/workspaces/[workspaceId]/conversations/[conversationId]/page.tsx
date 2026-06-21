@@ -25,7 +25,7 @@ export default async function ConversationPage({
       .order("occurred_at", { ascending: true }),
     supabase
       .from("artifacts")
-      .select("id, type, status, title, summary, created_by_email, created_at, artifact_sources(message_id, quote)")
+      .select("id, type, status, title, summary, assignee, task_status, due_date, created_by_email, created_at, artifact_sources(message_id, quote)")
       .eq("workspace_id", workspaceId)
       .eq("conversation_id", conversationId)
       .order("created_at", { ascending: false }),

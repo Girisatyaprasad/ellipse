@@ -42,12 +42,19 @@ create table if not exists artifacts (
   status text not null default 'pending' check (status in ('pending', 'accepted', 'rejected')),
   title text not null,
   summary text,
+  assignee text,
+  task_status text check (task_status is null or task_status in ('pending', 'in_progress', 'completed', 'blocked')),
+  due_date text,
   created_by uuid references auth.users(id) on delete set null,
   created_by_email text,
   created_at timestamptz not null default now(),
   reviewed_by uuid references auth.users(id) on delete set null,
   reviewed_at timestamptz
 );
+
+alter table artifacts add column if not exists assignee text;
+alter table artifacts add column if not exists task_status text check (task_status is null or task_status in ('pending', 'in_progress', 'completed', 'blocked'));
+alter table artifacts add column if not exists due_date text;
 
 create table if not exists artifact_sources (
   artifact_id uuid not null references artifacts(id) on delete cascade,
@@ -227,4 +234,5 @@ create index if not exists workspace_members_user_idx on workspace_members(user_
 create index if not exists conversations_workspace_idx on conversations(workspace_id, created_at desc);
 create index if not exists messages_conversation_idx on messages(conversation_id, occurred_at asc);
 create index if not exists artifacts_conversation_idx on artifacts(conversation_id, status, created_at desc);
+create index if not exists artifacts_task_status_idx on artifacts(conversation_id, type, task_status);
 create index if not exists artifact_sources_message_idx on artifact_sources(message_id);

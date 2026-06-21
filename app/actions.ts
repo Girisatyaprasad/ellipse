@@ -162,6 +162,9 @@ export async function sendMessage(formData: FormData) {
           status: "pending",
           title: extractedArtifact.title,
           summary: extractedArtifact.summary,
+          assignee: extractedArtifact.type === "task" ? extractedArtifact.assignee : null,
+          task_status: extractedArtifact.type === "task" ? "pending" : null,
+          due_date: extractedArtifact.type === "task" ? extractedArtifact.dueDate : null,
           created_by: userData.user.id,
           created_by_email: userData.user.email,
         })
@@ -211,6 +214,7 @@ export async function createArtifact(formData: FormData) {
       status: "pending",
       title,
       summary: summary || null,
+      task_status: type === "task" ? "pending" : null,
       created_by: userData.user.id,
       created_by_email: userData.user.email,
     })
@@ -241,6 +245,8 @@ export async function updateArtifact(formData: FormData) {
   const title = formString(formData, "title");
   const summary = formString(formData, "summary");
   const type = formString(formData, "type");
+  const assignee = formString(formData, "assignee");
+  const dueDate = formString(formData, "dueDate");
   const supabase = await createClient();
   const { data: userData, error: userError } = await supabase.auth.getUser();
 
@@ -249,9 +255,47 @@ export async function updateArtifact(formData: FormData) {
 
   const { error } = await supabase
     .from("artifacts")
-    .update({ title, summary: summary || null, type })
+    .update({
+      title,
+      summary: summary || null,
+      type,
+      assignee: type === "task" ? assignee || null : null,
+      due_date: type === "task" ? dueDate || null : null,
+      task_status: type === "task" ? "pending" : null,
+    })
     .eq("id", artifactId)
     .eq("workspace_id", workspaceId);
+
+  if (error) redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, error.message);
+
+  revalidatePath(`/workspaces/${workspaceId}/conversations/${conversationId}`);
+}
+
+export async function updateTaskExecution(formData: FormData) {
+  const workspaceId = formString(formData, "workspaceId");
+  const conversationId = formString(formData, "conversationId");
+  const artifactId = formString(formData, "artifactId");
+  const assignee = formString(formData, "assignee");
+  const taskStatus = formString(formData, "taskStatus");
+  const intent = formString(formData, "intent");
+  const nextStatus = intent === "complete" ? "completed" : taskStatus;
+  const dueDate = formString(formData, "dueDate");
+  const supabase = await createClient();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !userData.user) redirect("/login");
+  if (!artifactId || !["pending", "in_progress", "completed", "blocked"].includes(nextStatus)) return;
+
+  const { error } = await supabase
+    .from("artifacts")
+    .update({
+      assignee: assignee || null,
+      task_status: nextStatus,
+      due_date: dueDate || null,
+    })
+    .eq("id", artifactId)
+    .eq("workspace_id", workspaceId)
+    .eq("type", "task");
 
   if (error) redirectWithError(`/workspaces/${workspaceId}/conversations/${conversationId}`, error.message);
 

@@ -5,6 +5,8 @@ export type ExtractedArtifact = {
   title: string;
   summary: string | null;
   sourceQuote: string;
+  assignee: string | null;
+  dueDate: string | null;
 };
 
 const artifactTypes = new Set<ExtractedArtifactType>(["task", "decision", "blocker"]);
@@ -29,6 +31,8 @@ function asExtractedArtifact(value: unknown, fallbackQuote: string): ExtractedAr
   const title = typeof item.title === "string" ? cleanSentence(item.title) : "";
   const summary = typeof item.summary === "string" ? cleanSentence(item.summary) : "";
   const sourceQuote = typeof item.sourceQuote === "string" ? cleanSentence(item.sourceQuote) : "";
+  const assignee = typeof item.assignee === "string" ? cleanSentence(item.assignee) : "";
+  const dueDate = typeof item.dueDate === "string" ? cleanSentence(item.dueDate) : "";
 
   if (!artifactTypes.has(type as ExtractedArtifactType) || !title) return null;
 
@@ -37,6 +41,8 @@ function asExtractedArtifact(value: unknown, fallbackQuote: string): ExtractedAr
     title,
     summary: summary || null,
     sourceQuote: sourceQuote || fallbackQuote,
+    assignee: type === "task" && assignee ? assignee : null,
+    dueDate: type === "task" && dueDate ? dueDate : null,
   };
 }
 
@@ -70,6 +76,8 @@ function heuristicExtract(message: string): ExtractedArtifact[] {
       title: titleCase(work),
       summary: summaryParts.join(" "),
       sourceQuote,
+      assignee,
+      dueDate: deadline || null,
     });
   }
 
@@ -83,6 +91,8 @@ function heuristicExtract(message: string): ExtractedArtifact[] {
       title: `${titleCase(subject)} delayed`,
       summary: `Reason: ${reason}.`,
       sourceQuote,
+      assignee: null,
+      dueDate: null,
     });
   } else if (lower.startsWith("let's postpone ") || lower.startsWith("postpone ")) {
     const decisionText = text.replace(/^let's\s+/i, "").replace(/^postpone\s+/i, "");
@@ -91,6 +101,8 @@ function heuristicExtract(message: string): ExtractedArtifact[] {
       title: titleCase(decisionText),
       summary: null,
       sourceQuote,
+      assignee: null,
+      dueDate: null,
     });
   }
 
@@ -100,6 +112,8 @@ function heuristicExtract(message: string): ExtractedArtifact[] {
       title: titleCase(text),
       summary: null,
       sourceQuote,
+      assignee: null,
+      dueDate: null,
     });
   }
 
@@ -125,7 +139,7 @@ async function extractWithOpenAI(message: string) {
         {
           role: "system",
           content:
-            "Extract reviewable work artifacts from one team conversation message. Return only JSON with an artifacts array. Each artifact must have type task, decision, or blocker; title; summary; sourceQuote. Tasks need a concise work title and include assignee/deadline in summary when present. Decisions need the decision in title and reason in summary when present. Blockers need the obstacle in title. If nothing should be reviewed, return an empty artifacts array. Never mark artifacts accepted.",
+            "Extract reviewable work artifacts from one team conversation message. Return only JSON with an artifacts array. Each artifact must have type task, decision, or blocker; title; summary; sourceQuote; assignee; dueDate. Tasks need a concise work title, assignee when present, and dueDate when present. Decisions need the decision in title and reason in summary when present. Blockers need the obstacle in title. Use null for missing assignee or dueDate. If nothing should be reviewed, return an empty artifacts array. Never mark artifacts accepted.",
         },
         {
           role: "user",

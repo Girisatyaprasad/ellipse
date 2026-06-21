@@ -1,5 +1,5 @@
 import { Check, Link2, Send, Sparkles, X } from "lucide-react";
-import { reviewArtifact, sendMessage, updateArtifact } from "@/app/actions";
+import { reviewArtifact, sendMessage, updateArtifact, updateTaskExecution } from "@/app/actions";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -33,6 +33,9 @@ type Artifact = {
   status: "pending" | "accepted" | "rejected";
   title: string;
   summary: string | null;
+  assignee: string | null;
+  task_status: "pending" | "in_progress" | "completed" | "blocked" | null;
+  due_date: string | null;
   created_by_email: string | null;
   created_at: string;
   artifact_sources?: ArtifactSource[];
@@ -114,6 +117,22 @@ function ReviewArtifactCard({ artifact, workspaceId, conversationId }: { artifac
           className="min-h-14 w-full resize-none rounded-md border border-white/[0.08] bg-surface-1 px-3 py-2 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
           placeholder="Optional note"
         />
+        {artifact.type === "task" ? (
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              name="assignee"
+              defaultValue={artifact.assignee ?? ""}
+              className="h-9 rounded-md border border-white/[0.08] bg-surface-1 px-3 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
+              placeholder="Assignee"
+            />
+            <input
+              name="dueDate"
+              defaultValue={artifact.due_date ?? ""}
+              className="h-9 rounded-md border border-white/[0.08] bg-surface-1 px-3 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
+              placeholder="Due date"
+            />
+          </div>
+        ) : null}
         <div className="text-[11px] leading-5 text-muted-foreground">Created by {artifact.created_by_email ?? "unknown"}</div>
         {source ? <div className="rounded-md border border-white/[0.06] bg-surface-1 p-2 text-xs leading-5 text-muted-foreground">Proof: &quot;{source.quote}&quot;</div> : null}
         <div className="flex flex-wrap gap-2 pt-1">
@@ -144,6 +163,61 @@ function ReviewArtifactCard({ artifact, workspaceId, conversationId }: { artifac
           </Button>
         </form>
       </div>
+    </article>
+  );
+}
+
+function TaskExecutionCard({ artifact, workspaceId, conversationId }: { artifact: Artifact; workspaceId: string; conversationId: string }) {
+  const source = artifact.artifact_sources?.[0];
+
+  return (
+    <article className="rounded-md border border-white/[0.06] bg-surface-0 px-3 py-2">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <ArtifactBadge type={artifact.type} />
+        <span className="text-[11px] text-muted-foreground">{formatDateTime(artifact.created_at)}</span>
+      </div>
+      <div className="text-sm font-medium text-white">{artifact.title}</div>
+      {artifact.summary ? <p className="mt-1 text-xs leading-5 text-muted-foreground">{artifact.summary}</p> : null}
+      <form action={updateTaskExecution} className="mt-3 space-y-2">
+        <input type="hidden" name="workspaceId" value={workspaceId} />
+        <input type="hidden" name="conversationId" value={conversationId} />
+        <input type="hidden" name="artifactId" value={artifact.id} />
+        <input
+          name="assignee"
+          defaultValue={artifact.assignee ?? ""}
+          className="h-9 w-full rounded-md border border-white/[0.08] bg-surface-1 px-3 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
+          placeholder="Assignee"
+        />
+        <div className="grid grid-cols-[minmax(0,1fr)_7.25rem] gap-2">
+          <select
+            name="taskStatus"
+            defaultValue={artifact.task_status ?? "pending"}
+            className="h-9 rounded-md border border-white/[0.08] bg-surface-1 px-2 text-xs text-white focus:outline-none"
+          >
+            <option value="pending">Pending</option>
+            <option value="in_progress">In progress</option>
+            <option value="completed">Completed</option>
+            <option value="blocked">Blocked</option>
+          </select>
+          <input
+            name="dueDate"
+            defaultValue={artifact.due_date ?? ""}
+            className="h-9 rounded-md border border-white/[0.08] bg-surface-1 px-3 text-xs text-white placeholder:text-muted-foreground focus:outline-none"
+            placeholder="Due"
+          />
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm" variant="secondary">
+            Save
+          </Button>
+          <Button size="sm" name="intent" value="complete">
+            <Check className="h-3.5 w-3.5" />
+            Complete
+          </Button>
+        </div>
+      </form>
+      <div className="mt-2 text-[11px] text-muted-foreground">Created by {artifact.created_by_email ?? "unknown"}</div>
+      {source ? <div className="mt-2 rounded border border-white/[0.06] bg-surface-1 p-2 text-xs leading-5 text-muted-foreground">Proof: &quot;{source.quote}&quot;</div> : null}
     </article>
   );
 }
@@ -196,7 +270,8 @@ export function ConversationWorkspace({
   userEmail?: string | null;
 }) {
   const pendingArtifacts = artifacts.filter((artifact) => artifact.status === "pending");
-  const acceptedArtifacts = artifacts.filter((artifact) => artifact.status === "accepted");
+  const acceptedTasks = artifacts.filter((artifact) => artifact.status === "accepted" && artifact.type === "task");
+  const acceptedArtifacts = artifacts.filter((artifact) => artifact.status === "accepted" && artifact.type !== "task");
 
   return (
     <AppShell
@@ -211,7 +286,7 @@ export function ConversationWorkspace({
             <div className="min-w-0">
               <h1 className="truncate text-base font-semibold text-white">{activeConversation?.title ?? "No conversation selected"}</h1>
               <p className="mt-1 text-xs text-muted-foreground">
-                {activeConversation ? `${messages.length} messages / ${pendingArtifacts.length} pending / ${acceptedArtifacts.length} accepted` : "Create or select a conversation"}
+                {activeConversation ? `${messages.length} messages / ${pendingArtifacts.length} pending / ${acceptedTasks.length} tasks` : "Create or select a conversation"}
               </p>
             </div>
             <Button variant="secondary" size="sm" disabled>
@@ -278,8 +353,17 @@ export function ConversationWorkspace({
                 : null}
             </ArtifactSection>
 
-            <ArtifactSection title="Accepted Artifacts">
-              {acceptedArtifacts.length === 0 ? <EmptyState>No accepted artifacts yet.</EmptyState> : null}
+            <ArtifactSection title="Accepted Tasks">
+              {acceptedTasks.length === 0 ? <EmptyState>No accepted tasks yet.</EmptyState> : null}
+              {workspace && activeConversation
+                ? acceptedTasks.map((artifact) => (
+                    <TaskExecutionCard key={artifact.id} artifact={artifact} workspaceId={workspace.id} conversationId={activeConversation.id} />
+                  ))
+                : null}
+            </ArtifactSection>
+
+            <ArtifactSection title="Decisions and Blockers">
+              {acceptedArtifacts.length === 0 ? <EmptyState>No accepted decisions or blockers yet.</EmptyState> : null}
               {acceptedArtifacts.map((artifact) => (
                 <AcceptedArtifactCard key={artifact.id} artifact={artifact} />
               ))}
