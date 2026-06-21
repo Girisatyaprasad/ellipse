@@ -2,7 +2,13 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { hasSupabaseEnv, getSupabaseEnv } from "@/lib/supabase/config";
 
+const publicRoutes = new Set(["/", "/login", "/auth/callback"]);
+
 export async function middleware(request: NextRequest) {
+  if (publicRoutes.has(request.nextUrl.pathname)) {
+    return NextResponse.next({ request });
+  }
+
   if (!hasSupabaseEnv()) {
     return NextResponse.next({ request });
   }
@@ -28,5 +34,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)"],
 };

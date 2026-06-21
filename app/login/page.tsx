@@ -1,5 +1,6 @@
 import { signIn, signUp } from "@/app/actions";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
+import Link from "next/link";
 
 export default async function LoginPage({
   searchParams,
@@ -11,8 +12,11 @@ export default async function LoginPage({
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
       <div className="w-full max-w-sm rounded-lg border border-white/[0.08] bg-surface-1 p-6">
-        <h1 className="text-xl font-semibold text-white">Sign in to Ellipse</h1>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">Phase 1 persistence uses Supabase email/password auth.</p>
+        <Link href="/" className="mb-6 inline-flex text-sm text-muted-foreground hover:text-white">
+          Back to landing
+        </Link>
+        <h1 className="text-xl font-semibold text-white">Enter Ellipse</h1>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">Sign in or create an account to open your workspace.</p>
 
         {!hasSupabaseEnv() ? (
           <div className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
@@ -44,7 +48,7 @@ export default async function LoginPage({
               Sign in
             </button>
             <button formAction={signUp} className="h-10 rounded-md border border-white/[0.12] text-sm font-medium text-white">
-              Sign up
+              Get started
             </button>
           </div>
         </form>
