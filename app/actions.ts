@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { clearDevBypass, enableDevBypass, getCurrentUserContext } from "@/lib/auth/dev-bypass";
 import { shouldAutoConfirmTestUsers } from "@/lib/supabase/config";
 import { extractArtifactsFromMessage } from "@/lib/ai/extract-message";
 
@@ -42,6 +43,17 @@ export async function signIn(formData: FormData) {
     }
 
     redirectWithError("/login", error.message);
+  }
+
+  redirect("/app");
+}
+
+export async function devBypassSignIn() {
+  try {
+    await enableDevBypass();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not start test login.";
+    redirectWithError("/login", message);
   }
 
   redirect("/app");
@@ -91,6 +103,7 @@ export async function signUp(formData: FormData) {
 }
 
 export async function signOut() {
+  await clearDevBypass();
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/");
@@ -98,14 +111,14 @@ export async function signOut() {
 
 export async function createWorkspace(formData: FormData) {
   const name = formString(formData, "name") || "Untitled workspace";
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (userError || !userData.user) redirect("/login");
+  if (!session) redirect("/login");
+  const { supabase, user } = session;
 
   const { data: workspace, error: workspaceError } = await supabase
     .from("workspaces")
-    .insert({ name, created_by: userData.user.id })
+    .insert({ name, created_by: user.id })
     .select("id")
     .single();
 
@@ -113,7 +126,7 @@ export async function createWorkspace(formData: FormData) {
 
   const { error: memberError } = await supabase.from("workspace_members").insert({
     workspace_id: workspace.id,
-    user_id: userData.user.id,
+    user_id: user.id,
     role: "owner",
   });
 
@@ -125,14 +138,14 @@ export async function createWorkspace(formData: FormData) {
 export async function createConversation(formData: FormData) {
   const workspaceId = formString(formData, "workspaceId");
   const title = formString(formData, "title") || "New conversation";
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (userError || !userData.user) redirect("/login");
+  if (!session) redirect("/login");
+  const { supabase, user } = session;
 
   const { data: conversation, error } = await supabase
     .from("conversations")
-    .insert({ workspace_id: workspaceId, title, created_by: userData.user.id })
+    .insert({ workspace_id: workspaceId, title, created_by: user.id })
     .select("id")
     .single();
 
@@ -145,13 +158,13 @@ export async function sendMessage(formData: FormData) {
   const workspaceId = formString(formData, "workspaceId");
   const conversationId = formString(formData, "conversationId");
   const body = formString(formData, "body");
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (userError || !userData.user) redirect("/login");
+  if (!session) redirect("/login");
   if (!body) return;
+  const { supabase, user } = session;
 
-  const authorName = userData.user.email?.split("@")[0] || "You";
+  const authorName = user.email.split("@")[0] || "You";
 
   const { data: message, error } = await supabase
     .from("messages")
@@ -160,7 +173,7 @@ export async function sendMessage(formData: FormData) {
       conversation_id: conversationId,
       author_name: authorName,
       body,
-      created_by: userData.user.id,
+      created_by: user.id,
     })
     .select("id, body")
     .single();
@@ -183,8 +196,8 @@ export async function sendMessage(formData: FormData) {
           assignee: extractedArtifact.type === "task" ? extractedArtifact.assignee : null,
           task_status: extractedArtifact.type === "task" ? "pending" : null,
           due_date: extractedArtifact.type === "task" ? extractedArtifact.dueDate : null,
-          created_by: userData.user.id,
-          created_by_email: userData.user.email,
+          created_by: user.id,
+          created_by_email: user.email,
         })
         .select("id")
         .single();
@@ -216,12 +229,12 @@ export async function createArtifact(formData: FormData) {
   const title = formString(formData, "title");
   const summary = formString(formData, "summary");
   const sourceQuote = formString(formData, "sourceQuote");
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (userError || !userData.user) redirect("/login");
+  if (!session) redirect("/login");
   if (!workspaceId || !conversationId || !messageId || !title) return;
   if (!["task", "decision", "blocker"].includes(type)) return;
+  const { supabase, user } = session;
 
   const { data: artifact, error: artifactError } = await supabase
     .from("artifacts")
@@ -233,8 +246,8 @@ export async function createArtifact(formData: FormData) {
       title,
       summary: summary || null,
       task_status: type === "task" ? "pending" : null,
-      created_by: userData.user.id,
-      created_by_email: userData.user.email,
+      created_by: user.id,
+      created_by_email: user.email,
     })
     .select("id")
     .single();
@@ -265,11 +278,11 @@ export async function updateArtifact(formData: FormData) {
   const type = formString(formData, "type");
   const assignee = formString(formData, "assignee");
   const dueDate = formString(formData, "dueDate");
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (userError || !userData.user) redirect("/login");
+  if (!session) redirect("/login");
   if (!artifactId || !title || !["task", "decision", "blocker"].includes(type)) return;
+  const { supabase } = session;
 
   const { error } = await supabase
     .from("artifacts")
@@ -298,11 +311,11 @@ export async function updateTaskExecution(formData: FormData) {
   const intent = formString(formData, "intent");
   const nextStatus = intent === "complete" ? "completed" : taskStatus;
   const dueDate = formString(formData, "dueDate");
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (userError || !userData.user) redirect("/login");
+  if (!session) redirect("/login");
   if (!artifactId || !["pending", "in_progress", "completed", "blocked"].includes(nextStatus)) return;
+  const { supabase } = session;
 
   const { error } = await supabase
     .from("artifacts")
@@ -325,17 +338,17 @@ export async function reviewArtifact(formData: FormData) {
   const conversationId = formString(formData, "conversationId");
   const artifactId = formString(formData, "artifactId");
   const status = formString(formData, "status");
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (userError || !userData.user) redirect("/login");
+  if (!session) redirect("/login");
   if (!artifactId || !["accepted", "rejected", "pending"].includes(status)) return;
+  const { supabase, user } = session;
 
   const { error } = await supabase
     .from("artifacts")
     .update({
       status,
-      reviewed_by: status === "pending" ? null : userData.user.id,
+      reviewed_by: status === "pending" ? null : user.id,
       reviewed_at: status === "pending" ? null : new Date().toISOString(),
     })
     .eq("id", artifactId)

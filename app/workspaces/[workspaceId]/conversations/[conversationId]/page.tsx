@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { ConversationWorkspace } from "@/components/conversation-workspace";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUserContext } from "@/lib/auth/dev-bypass";
 
 export default async function ConversationPage({
   params,
@@ -8,10 +8,10 @@ export default async function ConversationPage({
   params: Promise<{ workspaceId: string; conversationId: string }>;
 }) {
   const { workspaceId, conversationId } = await params;
-  const supabase = await createClient();
-  const { data: userData } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
 
-  if (!userData.user) redirect("/login");
+  if (!session) redirect("/login");
+  const { supabase, user } = session;
 
   const [{ data: workspace }, { data: conversations = [] }, { data: activeConversation }, { data: messages = [] }, { data: artifacts = [] }] = await Promise.all([
     supabase.from("workspaces").select("id, name").eq("id", workspaceId).single(),
@@ -41,8 +41,8 @@ export default async function ConversationPage({
       activeConversation={activeConversation}
       messages={messages ?? []}
       artifacts={artifacts ?? []}
-      userId={userData.user.id}
-      userEmail={userData.user.email}
+      userId={user.id}
+      userEmail={user.email}
     />
   );
 }

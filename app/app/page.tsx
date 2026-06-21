@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
+import { getCurrentUserContext } from "@/lib/auth/dev-bypass";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
-import { createClient } from "@/lib/supabase/server";
 
 function SetupRequired() {
   return (
@@ -18,14 +18,14 @@ function SetupRequired() {
 export default async function AppEntryPage() {
   if (!hasSupabaseEnv()) return <SetupRequired />;
 
-  const supabase = await createClient();
-  const { data: userData } = await supabase.auth.getUser();
-  if (!userData.user) redirect("/login");
+  const session = await getCurrentUserContext();
+  if (!session) redirect("/login");
+  const { supabase, user } = session;
 
   const { data: membership } = await supabase
     .from("workspace_members")
     .select("workspace_id")
-    .eq("user_id", userData.user.id)
+    .eq("user_id", user.id)
     .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();

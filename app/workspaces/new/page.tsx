@@ -1,17 +1,16 @@
 import { redirect } from "next/navigation";
 import { createWorkspace } from "@/app/actions";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUserContext } from "@/lib/auth/dev-bypass";
 
 export default async function NewWorkspacePage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
-  const supabase = await createClient();
-  const { data: userData } = await supabase.auth.getUser();
+  const session = await getCurrentUserContext();
   const params = await searchParams;
 
-  if (!userData.user) redirect("/login");
+  if (!session) redirect("/login");
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
