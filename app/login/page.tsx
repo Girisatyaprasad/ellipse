@@ -1,4 +1,5 @@
 import { signIn } from "@/app/actions";
+import { PasswordField } from "@/components/auth/password-field";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
@@ -20,10 +21,14 @@ export default async function LoginPage({
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
+      <Link
+        href="/"
+        aria-label="Back to landing"
+        className="absolute left-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-lg text-muted-foreground hover:bg-white/[0.04] hover:text-white"
+      >
+        &lt;
+      </Link>
       <div className="w-full max-w-sm rounded-lg border border-white/[0.08] bg-surface-1 p-6">
-        <Link href="/" className="mb-6 inline-flex text-sm text-muted-foreground hover:text-white">
-          Back to landing
-        </Link>
         <h1 className="text-xl font-semibold text-white">Login to Ellipse</h1>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">Use your confirmed account to open your workspace.</p>
 
@@ -47,14 +52,7 @@ export default async function LoginPage({
             className="h-10 w-full rounded-md border border-white/[0.08] bg-surface-0 px-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none"
             placeholder="you@company.com"
           />
-          <input
-            name="password"
-            type="password"
-            required
-            minLength={6}
-            className="h-10 w-full rounded-md border border-white/[0.08] bg-surface-0 px-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none"
-            placeholder="Password"
-          />
+          <PasswordField name="password" placeholder="Password" />
           <div className="grid grid-cols-2 gap-2">
             <button formAction={signIn} className="col-span-2 h-10 rounded-md bg-white text-sm font-medium text-black">
               Login
@@ -66,6 +64,9 @@ export default async function LoginPage({
           <Link href="/register" className="text-white hover:underline">
             Register
           </Link>
+        </p>
+        <p className="mt-4 text-center text-xs leading-5 text-muted-foreground/70">
+          For local testing, disable email confirmation in Supabase Auth settings if you want instant login.
         </p>
       </div>
     </main>

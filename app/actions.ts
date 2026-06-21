@@ -35,7 +35,7 @@ export async function signIn(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     if (error.message.toLowerCase().includes("email not confirmed")) {
-      redirectWithMessage("/login", "Email not confirmed. Please confirm your email first, then login.");
+      redirectWithMessage("/login", "Email not confirmed. Confirm your email first, or disable email confirmation in Supabase Auth settings for local development.");
     }
 
     redirectWithError("/login", error.message);
@@ -65,7 +65,7 @@ export async function signUp(formData: FormData) {
   if (error) redirectWithError("/register", error.message);
 
   if (!data.session) {
-    redirectWithMessage("/register", "Account created. Check your email to confirm your account, then login.");
+    redirectWithMessage("/login", "Account created. Check your email to confirm your account, then login.");
   }
 
   redirect("/app");

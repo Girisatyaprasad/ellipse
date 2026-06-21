@@ -1,4 +1,5 @@
 import { signUp } from "@/app/actions";
+import { PasswordField } from "@/components/auth/password-field";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
@@ -20,10 +21,14 @@ export default async function RegisterPage({
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
+      <Link
+        href="/"
+        aria-label="Back to landing"
+        className="absolute left-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-lg text-muted-foreground hover:bg-white/[0.04] hover:text-white"
+      >
+        &lt;
+      </Link>
       <div className="w-full max-w-sm rounded-lg border border-white/[0.08] bg-surface-1 p-6">
-        <Link href="/" className="mb-6 inline-flex text-sm text-muted-foreground hover:text-white">
-          Back to landing
-        </Link>
         <h1 className="text-xl font-semibold text-white">Register for Ellipse</h1>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">Create your account. If email confirmation is enabled, you will need to confirm before login.</p>
 
@@ -47,22 +52,8 @@ export default async function RegisterPage({
             className="h-10 w-full rounded-md border border-white/[0.08] bg-surface-0 px-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none"
             placeholder="you@company.com"
           />
-          <input
-            name="password"
-            type="password"
-            required
-            minLength={6}
-            className="h-10 w-full rounded-md border border-white/[0.08] bg-surface-0 px-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none"
-            placeholder="Password"
-          />
-          <input
-            name="confirmPassword"
-            type="password"
-            required
-            minLength={6}
-            className="h-10 w-full rounded-md border border-white/[0.08] bg-surface-0 px-3 text-sm text-white placeholder:text-muted-foreground focus:outline-none"
-            placeholder="Confirm password"
-          />
+          <PasswordField name="password" placeholder="Password" />
+          <PasswordField name="confirmPassword" placeholder="Confirm password" />
           <button formAction={signUp} className="h-10 w-full rounded-md bg-white text-sm font-medium text-black">
             Register
           </button>
@@ -72,6 +63,9 @@ export default async function RegisterPage({
           <Link href="/login" className="text-white hover:underline">
             Login
           </Link>
+        </p>
+        <p className="mt-4 text-center text-xs leading-5 text-muted-foreground/70">
+          For local testing, disable email confirmation in Supabase Auth settings if you want instant login.
         </p>
       </div>
     </main>
